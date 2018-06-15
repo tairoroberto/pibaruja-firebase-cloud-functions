@@ -8,59 +8,74 @@ const router = express.Router();
 
 admin.initializeApp(functions.config().firebase);
 
-/*##### USER ######*/
+/*############### USER ###############*/
 app.route("/event")
     .get((req, res) => {
-        const lastEdition = admin.database().ref('/events');
-        lastEdition
+        const eventRef = admin.database().ref('/events');
+        eventRef
             .once('value')
             .then((snapshot) => {
-                return res.status(200).send(snapshot.val());
+
+                let events = [];
+                snapshot.forEach(function (data) {
+                    let event = data.val();
+                    event.uid = data.key;
+                    events.push(event)
+                });
+                return res.status(200).send({"success": true, "events": events});
             })
             .catch((error) => {
                 console.log("Erro ao buscar dados:", error);
-                return res.status(500).send({"success": true, "message": "Erro ao buscar dados: " + error});
+                return res.status(500).send({"success": false, "message": "Erro ao buscar dados: " + error});
             });
     })
     .post((req, res) => {
-        const userRef = admin.database().ref('/events');
+        const eventRef = admin.database().ref('/events');
 
-        let event = req.body;
-        event.date = new Date(Date.now()).toISOString();
-
-        event.uid = userRef.push(event).key;
-        userRef.push(event)
-            .then(() => {
-                return res.status(200).send({"success": true, "message": "Evento salvo com sucesso"});
-            })
-            .catch((error) => {
-                console.log("Erro ao salvar evento:", error);
-                return res.status(500).send({"success": true, "message": "Erro ao salvar evento: " + error});
-            });
+        eventRef.push({
+            name: req.body.name,
+            description: req.body.description,
+            date: req.body.date,
+            image: req.body.image,
+            local: req.body.local,
+            sponsor: req.body.sponsor,
+            created_at: new Date(Date.now()).toISOString()
+        }).then(() => {
+            return res.status(200).send({"success": true, "message": "Evento salvo com sucesso"});
+        }).catch((error) => {
+            console.log("Erro ao salvar evento:", error);
+            return res.status(500).send({"success": false, "message": "Erro ao salvar evento: " + error});
+        });
 
     }).put((req, res) => {
-    const lastEdition = admin.database().ref('/events/' + req.body.id);
-    lastEdition
+    const eventRef = admin.database().ref('/events/' + req.body.id);
+    eventRef
         .once('value')
         .then((snapshot) => {
-            let user = snapshot.val();
+            let event = JSON.parse(snapshot.val());
+            event.name = req.body.name;
+            event.description = req.body.description;
+            event.date = req.body.date;
+            event.image = req.body.image;
+            event.local = req.body.local;
+            event.sponsor = req.body.sponsor;
 
-            return res.status(200).send();
+            return eventRef.set(event)
+                .then(() => {
+                    return res.status(200).send({"success": true, "message": "Evento atualizado com sucesso"});
+                })
+                .catch((error) => {
+                    console.log("Erro ao salvar evento:", error);
+                    return res.status(500).send({"success": false, "message": "Erro ao atualizar evento: " + error});
+                });
         })
         .catch((error) => {
             console.log("Erro ao atualizar dados do usuário:", error);
-            return res.status(500).send({"success": true, "message": "Erro ao atualizar dados do usuário: " + error});
+            return res.status(500).send({"success": false, "message": "Erro ao atualizar dados do usuário: " + error});
         });
 });
 
-function uuidv4() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        let r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    });
-}
-
-/* Send notification toi topic */
+/*############### Send notification toi topic ###############*/
 app.post("/notification", (req, res) => {
     const topic = "ecpc";
 
@@ -71,11 +86,11 @@ app.post("/notification", (req, res) => {
         })
         .catch((error) => {
             console.log("Erro ao enviar a mensagem:", error);
-            return res.status(500).send({"success": true, "message": "Erro ao enviar a mensagem: " + error});
+            return res.status(500).send({"success": false, "message": "Erro ao enviar a mensagem: " + error});
         });
 });
 
-/* Send notification toi topic */
+/*############### Send email to user ###############*/
 app.route("/email")
     .post((req, res) => {
         const APP_NAME = 'PIB Arujá';
