@@ -17,7 +17,7 @@ app.route("/event")
             .then((snapshot) => {
 
                 let events = [];
-                snapshot.forEach(function (data) {
+                snapshot.forEach((data) => {
                     let event = data.val();
                     event.uid = data.key;
                     events.push(event)
@@ -48,11 +48,11 @@ app.route("/event")
         });
 
     }).put((req, res) => {
-    const eventRef = admin.database().ref('/events/' + req.body.id);
+    const eventRef = admin.database().ref('/events/' + req.body.uid);
     eventRef
         .once('value')
         .then((snapshot) => {
-            let event = JSON.parse(snapshot.val());
+            let event = {};
             event.name = req.body.name;
             event.description = req.body.description;
             event.date = req.body.date;
