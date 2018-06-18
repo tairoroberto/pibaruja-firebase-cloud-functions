@@ -33,12 +33,14 @@ app.route("/user")
         const userRef = admin.database().ref('/users');
 
         userRef.push({
+            email: req.body.email,
+            password: req.body.password,
             name: req.body.name,
-            description: req.body.description,
-            date: req.body.date,
+            birthday: req.body.birthday,
             image: req.body.image,
-            local: req.body.local,
-            sponsor: req.body.sponsor,
+            address: req.body.address,
+            city: req.body.city,
+            cep: req.body.cep,
             created_at: new Date(Date.now()).toISOString()
         }).then(() => {
             return res.status(200).send({"success": true, "message": "Usuário salvo com sucesso"});
@@ -52,15 +54,17 @@ app.route("/user")
     userRef
         .once('value')
         .then((snapshot) => {
-            let event = {};
-            event.name = req.body.name;
-            event.description = req.body.description;
-            event.date = req.body.date;
-            event.image = req.body.image;
-            event.local = req.body.local;
-            event.sponsor = req.body.sponsor;
+            let user = {};
+            user.email = req.body.email;
+            user.password = req.body.password;
+            user.name = req.body.name;
+            user.birthday = req.body.birthday;
+            user.image = req.body.image;
+            user.address = req.body.address;
+            user.city = req.body.city;
+            user.cep = req.body.cep;
 
-            return userRef.set(event)
+            return userRef.set(user)
                 .then(() => {
                     return res.status(200).send({"success": true, "message": "Usuário atualizado com sucesso"});
                 })
@@ -115,8 +119,10 @@ app.route("/event")
             description: req.body.description,
             date: req.body.date,
             image: req.body.image,
+            video: req.body.video,
             local: req.body.local,
             sponsor: req.body.sponsor,
+            contact: req.body.contact,
             created_at: new Date(Date.now()).toISOString()
         }).then(() => {
             return res.status(200).send({"success": true, "message": "Evento salvo com sucesso"});
@@ -135,8 +141,10 @@ app.route("/event")
             event.description = req.body.description;
             event.date = req.body.date;
             event.image = req.body.image;
+            event.video = req.body.video;
             event.local = req.body.local;
             event.sponsor = req.body.sponsor;
+            event.contact = req.body.contact;
 
             return eventRef.set(event)
                 .then(() => {
@@ -161,6 +169,145 @@ app.route("/event")
         .catch((error) => {
             console.log("Erro ao deletar dados do usuário:", error);
             return res.status(500).send({"success": false, "message": "Erro ao atualizar dados do usuário: " + error});
+        });
+});
+
+
+/*############### ECPC ###############*/
+app.route("/ecpc")
+    .get((req, res) => {
+        const eventRef = admin.database().ref('/ecpc/married_couple');
+        eventRef
+            .once('value')
+            .then((snapshot) => {
+
+                let ecpc = [];
+                snapshot.forEach((data) => {
+                    let event = data.val();
+                    event.uid = data.key;
+                    ecpc.push(event)
+                });
+                return res.status(200).send({"success": true, "ecpc": ecpc});
+            })
+            .catch((error) => {
+                console.log("Erro ao buscar dados:", error);
+                return res.status(500).send({"success": false, "message": "Erro ao buscar dados: " + error});
+            });
+    })
+    .post((req, res) => {
+        const ecpcRef = admin.database().ref('/ecpc/married_couple');
+
+        ecpcRef.push({
+            ecpc_date: req.body.ecpc_date,
+            husband_name: req.body.husband_name,
+            husband_nickname: req.body.husband_nickname,
+            husband_birthday: req.body.husband_birthday,
+            husband_church: req.body.husband_church,
+            husband_father: req.body.husband_father,
+            husband_mother: req.body.husband_mother,
+            husband_email: req.body.husband_email,
+            husband_cellphone: req.body.husband_cellphone,
+            husband_observations: req.body.husband_observations,
+
+            wife_name: req.body.wife_name,
+            wife_nickname: req.body.wife_nickname,
+            wife_birthday: req.body.wife_birthday,
+            wife_church: req.body.wife_church,
+            wife_father: req.body.wife_father,
+            wife_mother: req.body.wife_mother,
+            wife_email: req.body.wife_email,
+            wife_cellphone: req.body.wife_cellphone,
+            wife_observations: req.body.wife_observations,
+
+            kids: req.body.kids,
+            marriage_date: req.body.marriage_date,
+            address: req.body.address,
+            cep: req.body.cep,
+            city: req.body.city,
+            complement: req.body.complement,
+
+            sponsor_name: req.body.sponsor_name,
+            sponsor_telephone: req.body.sponsor_telephone,
+            sponsor_email: req.body.sponsor_email,
+
+            created_at: new Date(Date.now()).toISOString()
+        }).then(() => {
+            return res.status(200).send({"success": true, "message": "Casal do ECPC salvo com sucesso"});
+        }).catch((error) => {
+            console.log("Erro ao salvar casal do ECPC:", error);
+            return res.status(500).send({"success": false, "message": "Erro ao salvar casal do ECPC: " + error});
+        });
+
+    }).put((req, res) => {
+    const eventRef = admin.database().ref('/ecpc/married_couple/' + req.body.uid);
+    eventRef
+        .once('value')
+        .then((snapshot) => {
+            let ecpc = {};
+            ecpc.ecpc_date = req.body.ecpc_date;
+            ecpc.husband_name = req.body.husband_name;
+            ecpc.husband_nickname = req.body.husband_nickname;
+            ecpc.husband_birthday = req.body.husband_birthday;
+            ecpc.husband_church = req.body.husband_church;
+            ecpc.husband_father = req.body.husband_father;
+            ecpc.husband_mother = req.body.husband_mother;
+            ecpc.husband_email = req.body.husband_email;
+            ecpc.husband_cellphone = req.body.husband_cellphone;
+            ecpc.husband_observations = req.body.husband_observations;
+
+            ecpc.wife_name = req.body.wife_name;
+            ecpc.wife_nickname = req.body.wife_nickname;
+            ecpc.wife_birthday = req.body.wife_birthday;
+            ecpc.wife_church = req.body.wife_church;
+            ecpc.wife_father = req.body.wife_father;
+            ecpc.wife_mother = req.body.wife_mother;
+            ecpc.wife_email = req.body.wife_email;
+            ecpc.wife_cellphone = req.body.wife_cellphone;
+            ecpc.wife_observations = req.body.wife_observations;
+
+            ecpc.kids = req.body.kids;
+            ecpc.marriage_date = req.body.marriage_date;
+            ecpc.address = req.body.address;
+            ecpc.cep = req.body.cep;
+            ecpc.city = req.body.city;
+            ecpc.complement = req.body.complement;
+
+            ecpc.sponsor_name = req.body.sponsor_name;
+            ecpc.sponsor_telephone = req.body.sponsor_telephone;
+            ecpc.sponsor_email = req.body.sponsor_email;
+
+            return eventRef.set(ecpc)
+                .then(() => {
+                    return res.status(200).send({"success": true, "message": "Casal do ECPC atualizado com sucesso"});
+                })
+                .catch((error) => {
+                    console.log("Erro ao salvar casal do ECPC:", error);
+                    return res.status(500).send({
+                        "success": false,
+                        "message": "Erro ao atualizar casal do ECPC : " + error
+                    });
+                });
+        })
+        .catch((error) => {
+            console.log("Erro ao atualizar dados do casal do ECPC :", error);
+            return res.status(500).send({
+                "success": false,
+                "message": "Erro ao atualizar dados do casal do ECPC: " + error
+            });
+        });
+}).delete((req, res) => {
+    const eventRef = admin.database().ref('/ecpc/married_couple/' + req.body.uid);
+    eventRef
+        .remove()
+        .then(() => {
+            return res.status(200).send({"success": true, "message": "Casal do ECPC deletado com sucesso"});
+        })
+        .catch((error) => {
+            console.log("Erro ao deletar dados do casal do ECPC:", error);
+            return res.status(500).send({
+                "success": false,
+                "message": "Erro ao atualizar dados do casal do ECPC: " + error
+            });
         });
 });
 
