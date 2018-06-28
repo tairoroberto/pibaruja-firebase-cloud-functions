@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" lang="pt_BR">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ECPC Arujá</title>
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/5.1.0/firebase-app.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/5.1.0/firebase-auth.js"></script>
+    <script defer src="/__/firebase/5.1.0/firebase-database.js"></script>
+    <script defer src="/__/firebase/5.1.0/firebase-messaging.js"></script>
+    <script defer src="/__/firebase/5.1.0/firebase-storage.js"></script>
+    <!-- initialize the SDK after all desired features are loaded -->
+    <script defer src="/__/firebase/init.js"></script>
+
+
+    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic'
+          rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,900,700italic,900italic'
+          rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- For-Mobile-Apps-and-Meta-Tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <!-- //For-Mobile-Apps-and-Meta-Tags -->
+    <script src="js/jquery.min.js"></script>
+    <script>
+
+        let ecpcDate;
+        let ecpcDateUid;
+
+        $(document).ready(function (c) {
+
+            $.get("https://us-central1-pibaruja-39957.cloudfunctions.net/app/ecpc/date", function (data, status) {
+                let html = "";
+                for (let i = 0; i < data.ecpc_dates.length; i++) {
+                    console.log("data:", data.ecpc_dates[i].ecpc_date);
+                    html += "<div style='float: left' id='div_checkbox_data_" + i + "' class=\"checkbox col-xs-12 col-sm-12 col-md-12 col-lg-12\" >" +
+                        "<label id='label_checkbox_data_" + i + "' style='color: #F0F8FF'>\n" + data.ecpc_dates[i].ecpc_date +
+                        "<input type=\"radio\" required name='radioDate' id='checkbox_data_" + i + "' value=\"" + data.ecpc_dates[i].ecpc_date + "," + data.ecpc_dates[i].uid + "\" id=\"ecpc\" onclick='setValueEcpcDate(this)'>" +
+                        "</label>" +
+                        "</div><br>"
+
+                }
+                $("#divCheck").html(html)
+            });
+
+            $("#formEcpc").submit(function () {
+
+                $.post("https://us-central1-pibaruja-39957.cloudfunctions.net/app/ecpc/married_couple",
+                    {
+                        ecpc_date_uid: ecpcDateUid,
+                        ecpc_date: ecpcDate,
+                        husband_name: $("#nome_marido").val(),
+                        husband_nickname: $("#apelido_marido").val(),
+                        husband_birthday: $("#data_nascimento_marido").val(),
+                        husband_church: $("#denominacao_marido").val(),
+                        husband_father: $("#nome_pai_marido").val(),
+                        husband_mother: $("#nome_mae_marido").val(),
+                        husband_email: $("#email_marido").val(),
+                        husband_cellphone: $("#celular_marido").val(),
+                        husband_observations: $("#observacoes_marido").val(),
+
+                        wife_name: $("#nome_esposa").val(),
+                        wife_nickname: $("#apelido_esposa").val(),
+                        wife_birthday: $("#data_nascimento_esposa").val(),
+                        wife_church: $("#denominacao_esposa").val(),
+                        wife_father: $("#nome_pai_esposa").val(),
+                        wife_mother: $("#nome_mae_esposa").val(),
+                        wife_email: $("#email_esposa").val(),
+                        wife_cellphone: $("#celular_esposa").val(),
+                        wife_observations: $("#observacoes_esposa").val(),
+
+                        kids: $("#quantiade_filhos").val(),
+                        marriage_date: $("#data_casamento").val(),
+                        fixed_phone: $("#telefone_fixo").val(),
+                        address: $("#endereco").val(),
+
+                        cep: $("#cep").val(),
+                        address_number: $("#numero").val(),
+                        district: $("#bairro").val(),
+                        city: $("#cidade").val(),
+                        state: $("#estato").val(),
+                        complement: "",
+
+                        sponsor_name: $("#casal_responsavel_encontro").val(),
+                        sponsor_telephone: $("#telefone_casal_responsavel_encontro").val(),
+                        sponsor_email: $("#email_casal_responsavel_encontro").val(),
+                    },
+                    function (data, status) {
+                        console.log("data response", data);
+                    });
+            });
+        });
+
+        function setValueEcpcDate(obj) {
+            ecpcDate = obj.value.split(",")[0];
+            ecpcDateUid = obj.value.split(",")[1];
+        }
+
+    </script>
+</head>
+
+<body>
+<h1>Inscrição Encontristas</h1>
+<div class="container">
+
+    <div class="sign-up-agileinfo">
+        <form id="formEcpc" method="post">
+
+            <div class="row">
+                <div  class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div class="alert-warning">
+                        <strong>Datas dsponíveis</strong>
+                    </div>
+                    <div id="divCheck" class="row"></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
+                    <input type="text" class="first name" id="nome_marido" name="nome_marido" placeholder="Nome Marido" required="" >
+                    <input type="text" class="last name" id="apelido_marido" name="apelido_marido" placeholder="Apelido Marido" required="" >
+                    <input type="date" style="width: 100%;" id="data_nascimento_marido" name="data_nascimento_marido" placeholder="Data de Nascimento Marido" required="" ><br><br>
+                    <select name="denominacao_marido" id="denominacao_marido" class="form-control" required >
+                        <option selected value="">Denominação (Igreja) Marido</option>
+                        <option value="Nenhuma">Nenhuma</option>
+                        <option value="Adventista">Adventista</option>
+                        <option value="Assembléia de Deus">Assembléia de Deus</option>
+                        <option value="Batista">Batista</option>
+                        <option value="Batista do 7º Dia">Batista do 7º Dia</option>
+                        <option value="Bíblica da Paz">Bíblica da Paz</option>
+                        <option value="Boas Novas">Boas Novas</option>
+                        <option value="Budista">Budista</option>
+                        <option value="Casa de Oração">Casa de Oração</option>
+                        <option value="Católica">Católica</option>
+                        <option value="Com. Ev.Neopentecostal">Com. Ev.Neopentecostal</option>
+                        <option value="Com. Ev.Nova Jerusalém">Com. Ev.Nova Jerusalém</option>
+                        <option value="Com. Manancial de Vida">Com. Manancial de Vida</option>
+                        <option value="Com.Ev.Redenção Plena">Com.Ev.Redenção Plena</option>
+                        <option value="Com.Pentec.do Brasil">Com.Pentec.do Brasil</option>
+                        <option value="Comun. Evang. Missões">Comun. Evang. Missões</option>
+                        <option value="Comunhão Batista">Comunhão Batista</option>
+                        <option value="Comunidade Agape">Comunidade Agape</option>
+                        <option value="Comunidade Carisma">Comunidade Carisma</option>
+                        <option value="Comunidade da Graça">Comunidade da Graça</option>
+                        <option value="Comunidade Ev. M S S">Comunidade Ev. M S S</option>
+                        <option value="Comunidade Filadélfia">Comunidade Filadélfia</option>
+                        <option value="Comunidade Vida e Paz">Comunidade Vida e Paz</option>
+                        <option value="Cong. Cristã do Brasil">Cong. Cristã do Brasil</option>
+                        <option value="Cristã Pentec. Bíblia">Cristã Pentec. Bíblia</option>
+                        <option value="Cristo Salva">Cristo Salva</option>
+                        <option value="Deus é Amor">Deus é Amor</option>
+                        <option value="Espírita">Espírita</option>
+                        <option value="Evangelho Pleno">Evangelho Pleno</option>
+                        <option value="Evangelho Quadrangular">Evangelho Quadrangular</option>
+                        <option value="Evangélica">Evangélica</option>
+                        <option value="I.E.C. Presbiteriana">I.E.C. Presbiteriana</option>
+                        <option value="I.E.Holiness do Brasil">I.E.Holiness do Brasil</option>
+                        <option value="Ig. Cristã Filadelfia">Ig. Cristã Filadelfia</option>
+                        <option value="Ig. do Evangelho Pleno">Ig. do Evangelho Pleno</option>
+                        <option value="Ig. Ev. Casa de Oração">Ig. Ev. Casa de Oração</option>
+                        <option value="Ig. Ev. Congregacional">Ig. Ev. Congregacional</option>
+                        <option value="Ig. Ev. Cristo Liberta">Ig. Ev. Cristo Liberta</option>
+                        <option value="Ig. Ev. Deus em Cristo">Ig. Ev. Deus em Cristo</option>
+                        <option value="Ig. Mensagem de Cristo">Ig. Mensagem de Cristo</option>
+                        <option value="Ig.Esperança em Cristo">Ig.Esperança em Cristo</option>
+                        <option value="Igreja Água da Vida">Igreja Água da Vida</option>
+                        <option value="Igreja Bola de Neve">Igreja Bola de Neve</option>
+                        <option value="Igreja da Graça">Igreja da Graça</option>
+                        <option value="Igreja da Libertação">Igreja da Libertação</option>
+                        <option value="Igreja Ev. Pent. Livre">Igreja Ev. Pent. Livre</option>
+                        <option value="Internacional da Graça">Internacional da Graça</option>
+                        <option value="Libertador de Israel">Libertador de Israel</option>
+                        <option value="Luterana">Luterana</option>
+                        <option value="Maravilha de Jesus">Maravilha de Jesus</option>
+                        <option value="Metodista">Metodista</option>
+                        <option value="MEVAM">MEVAM</option>
+                        <option value="Ministério Cristo Vive">Ministério Cristo Vive</option>
+                        <option value="Ministério Fé e Obras">Ministério Fé e Obras</option>
+                        <option value="Ministério Vida">Ministério Vida</option>
+                        <option value="Mis. Ev. O Pão da Vida">Mis. Ev. O Pão da Vida</option>
+                        <option value="Missão no Brasil">Missão no Brasil</option>
+                        <option value="Mormon">Mormon</option>
+                        <option value="Nazareno">Nazareno</option>
+                        <option value="O Brasil para Cristo">O Brasil para Cristo</option>
+                        <option value="Paz e Vida">Paz e Vida</option>
+                        <option value="Pentecostal-Unidos Br.">Pentecostal-Unidos Br.</option>
+                        <option value="Plenitude Cristã">Plenitude Cristã</option>
+                        <option value="Presbiteriana">Presbiteriana</option>
+                        <option value="Renascer">Renascer</option>
+                        <option value="Renascer em Cristo">Renascer em Cristo</option>
+                        <option value="Renovando Vidas">Renovando Vidas</option>
+                        <option value="Ressurreição de Cristo">Ressurreição de Cristo</option>
+                        <option value="Semeando Vidas">Semeando Vidas</option>
+                        <option value="SOS Jesus">SOS Jesus</option>
+                        <option value="Templo das Águas">Templo das Águas</option>
+                        <option value="Tempo de Avivamento">Tempo de Avivamento</option>
+                        <option value="Testemunhas de Jeová">Testemunhas de Jeová</option>
+                        <option value="Unida">Unida</option>
+                        <option value="Universal R. de Deus">Universal R. de Deus</option>
+                        <option value="Viver em Cristo">Viver em Cristo</option>
+                    </select><br>
+                    <input type="email" style="width: 100%;" class="email" id="email_marido" name="email_marido" placeholder="Email Marido" required="" ><br><br>
+                    <input type="tel" style="width: 100%;" id="celular_marido" name="celular_marido" placeholder="Celular Marido" required="" ><br><br>
+                    <input type="text" class="last name" id="nome_pai_marido" name="nome_pai_marido" placeholder="Nome do Pai Marido" required="" >
+                    <input type="text" class="last name" id="nome_mae_marido" name="nome_mae_marido" placeholder="Nome da Mãe Marido" required="" >
+                    <textarea  style="width: 100%; height: 150px" id="observacoes_marido" name="observacoes_marido" placeholder="Indique abaixo se o marido possui alguma alergia a alimentos ou remédios. Solicitamnos especificarem também tratamentos médicos em andamento, remédio utilizados, etc." ></textarea>
+
+                </div>
+                <div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
+                    <input type="text" class="first name" id="nome_esposa" name="nome_esposa" placeholder="Nome Esposa" required="" >
+                    <input type="text" class="last name" id="apelido_esposa" name="apelido_esposa" placeholder="Apelido Esposa" required="" >
+                    <input type="date" style="width: 100%;" id="data_nascimento_esposa" name="data_nascimento_esposa" placeholder="Data de Nascimento Esposa" required="" ><br><br>
+                    <select name="denominacao_marido" id="denominacao_esposa" class="form-control" required>
+                        <option selected value="">Denominação (Igreja) Esposa</option>
+                        <option value="Nenhuma">Nenhuma</option>
+                        <option value="Adventista">Adventista</option>
+                        <option value="Assembléia de Deus">Assembléia de Deus</option>
+                        <option value="Batista">Batista</option>
+                        <option value="Batista do 7º Dia">Batista do 7º Dia</option>
+                        <option value="Bíblica da Paz">Bíblica da Paz</option>
+                        <option value="Boas Novas">Boas Novas</option>
+                        <option value="Budista">Budista</option>
+                        <option value="Casa de Oração">Casa de Oração</option>
+                        <option value="Católica">Católica</option>
+                        <option value="Com. Ev.Neopentecostal">Com. Ev.Neopentecostal</option>
+                        <option value="Com. Ev.Nova Jerusalém">Com. Ev.Nova Jerusalém</option>
+                        <option value="Com. Manancial de Vida">Com. Manancial de Vida</option>
+                        <option value="Com.Ev.Redenção Plena">Com.Ev.Redenção Plena</option>
+                        <option value="Com.Pentec.do Brasil">Com.Pentec.do Brasil</option>
+                        <option value="Comun. Evang. Missões">Comun. Evang. Missões</option>
+                        <option value="Comunhão Batista">Comunhão Batista</option>
+                        <option value="Comunidade Agape">Comunidade Agape</option>
+                        <option value="Comunidade Carisma">Comunidade Carisma</option>
+                        <option value="Comunidade da Graça">Comunidade da Graça</option>
+                        <option value="Comunidade Ev. M S S">Comunidade Ev. M S S</option>
+                        <option value="Comunidade Filadélfia">Comunidade Filadélfia</option>
+                        <option value="Comunidade Vida e Paz">Comunidade Vida e Paz</option>
+                        <option value="Cong. Cristã do Brasil">Cong. Cristã do Brasil</option>
+                        <option value="Cristã Pentec. Bíblia">Cristã Pentec. Bíblia</option>
+                        <option value="Cristo Salva">Cristo Salva</option>
+                        <option value="Deus é Amor">Deus é Amor</option>
+                        <option value="Espírita">Espírita</option>
+                        <option value="Evangelho Pleno">Evangelho Pleno</option>
+                        <option value="Evangelho Quadrangular">Evangelho Quadrangular</option>
+                        <option value="Evangélica">Evangélica</option>
+                        <option value="I.E.C. Presbiteriana">I.E.C. Presbiteriana</option>
+                        <option value="I.E.Holiness do Brasil">I.E.Holiness do Brasil</option>
+                        <option value="Ig. Cristã Filadelfia">Ig. Cristã Filadelfia</option>
+                        <option value="Ig. do Evangelho Pleno">Ig. do Evangelho Pleno</option>
+                        <option value="Ig. Ev. Casa de Oração">Ig. Ev. Casa de Oração</option>
+                        <option value="Ig. Ev. Congregacional">Ig. Ev. Congregacional</option>
+                        <option value="Ig. Ev. Cristo Liberta">Ig. Ev. Cristo Liberta</option>
+                        <option value="Ig. Ev. Deus em Cristo">Ig. Ev. Deus em Cristo</option>
+                        <option value="Ig. Mensagem de Cristo">Ig. Mensagem de Cristo</option>
+                        <option value="Ig.Esperança em Cristo">Ig.Esperança em Cristo</option>
+                        <option value="Igreja Água da Vida">Igreja Água da Vida</option>
+                        <option value="Igreja Bola de Neve">Igreja Bola de Neve</option>
+                        <option value="Igreja da Graça">Igreja da Graça</option>
+                        <option value="Igreja da Libertação">Igreja da Libertação</option>
+                        <option value="Igreja Ev. Pent. Livre">Igreja Ev. Pent. Livre</option>
+                        <option value="Internacional da Graça">Internacional da Graça</option>
+                        <option value="Libertador de Israel">Libertador de Israel</option>
+                        <option value="Luterana">Luterana</option>
+                        <option value="Maravilha de Jesus">Maravilha de Jesus</option>
+                        <option value="Metodista">Metodista</option>
+                        <option value="MEVAM">MEVAM</option>
+                        <option value="Ministério Cristo Vive">Ministério Cristo Vive</option>
+                        <option value="Ministério Fé e Obras">Ministério Fé e Obras</option>
+                        <option value="Ministério Vida">Ministério Vida</option>
+                        <option value="Mis. Ev. O Pão da Vida">Mis. Ev. O Pão da Vida</option>
+                        <option value="Missão no Brasil">Missão no Brasil</option>
+                        <option value="Mormon">Mormon</option>
+                        <option value="Nazareno">Nazareno</option>
+                        <option value="O Brasil para Cristo">O Brasil para Cristo</option>
+                        <option value="Paz e Vida">Paz e Vida</option>
+                        <option value="Pentecostal-Unidos Br.">Pentecostal-Unidos Br.</option>
+                        <option value="Plenitude Cristã">Plenitude Cristã</option>
+                        <option value="Presbiteriana">Presbiteriana</option>
+                        <option value="Renascer">Renascer</option>
+                        <option value="Renascer em Cristo">Renascer em Cristo</option>
+                        <option value="Renovando Vidas">Renovando Vidas</option>
+                        <option value="Ressurreição de Cristo">Ressurreição de Cristo</option>
+                        <option value="Semeando Vidas">Semeando Vidas</option>
+                        <option value="SOS Jesus">SOS Jesus</option>
+                        <option value="Templo das Águas">Templo das Águas</option>
+                        <option value="Tempo de Avivamento">Tempo de Avivamento</option>
+                        <option value="Testemunhas de Jeová">Testemunhas de Jeová</option>
+                        <option value="Unida">Unida</option>
+                        <option value="Universal R. de Deus">Universal R. de Deus</option>
+                        <option value="Viver em Cristo">Viver em Cristo</option>
+                    </select ><br>
+                    <input type="email" style="width: 100%;" class="email" id="email_esposa" name="email_esposa" placeholder="Email Esposa" required="" ><br><br>
+                    <input type="tel" style="width: 100%;" id="celular_esposa" name="celular_esposa" placeholder="Celular Esposa" required="" ><br><br>
+                    <input type="text" class="last name" id="nome_pai_esposa" name="nome_pai_esposa" placeholder="Nome do Pai Esposa" required="" >
+                    <input type="text" class="last name" id="nome_mae_esposa" name="nome_mae_esposa" placeholder="Nome da Mãe Esposa" required="" >
+                    <textarea style="width: 100%; height: 150px"  id="observacoes_esposa" name="observacoes_esposa" placeholder="Indique abaixo se a esposa possui alguma alergia a alimentos ou remédios. Solicitamnos especificarem também tratamentos médicos em andamento, remédio utilizados, etc." ></textarea>
+                </div>
+            </div>
+
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
+                    <input type="number" style="width: 100%;" id="quantiade_filhos" name="quantiade_filhos" placeholder="Quantos Filhos?" required="" ><br><br>
+                    <input type="date" id="data_casamento" style="width: 100%;" name="data_casamento" placeholder="Data do Casamento" required="" ><br><br>
+                    <input type="text" class="first name" id="telefone_fixo" name="telefone_fixo" placeholder="Telefone Fixo" >
+                </div>
+                <div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
+                    <input type="text" class="first name" id="cep" name="cep" placeholder="CEP" required="" >
+                    <input type="text" class="first name" id="endereco" name="endereco" placeholder="Endereço" required="" >
+                    <input type="text" class="first name" id="numero" name="numero" placeholder="Número" required="" >
+                    <input type="text" class="first name" id="bairro" name="bairro" placeholder="Bairro" required="" >
+                    <input type="text" class="first name" id="cidade" name="cidade" placeholder="Cidade" required="" >
+                    <input type="text" class="first name" id="estato" name="estato" placeholder="Estado" required="" >
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <input type="text" class="first name" id="casal_responsavel_encontro" name="casal_responsavel_encontro" placeholder="Casal Responsável
+ (Equipe do Encontro)" required="" >
+                    <input type="text" class="first name" id="telefone_casal_responsavel_encontro" name="telefone_casal_responsavel_encontro" placeholder="Telefone Casal Responsável
+ (Equipe do Encontro)" required="" >
+                    <input type="text" class="first name" id="email_casal_responsavel_encontro" name="email_casal_responsavel_encontro" placeholder="Email Casal Responsável
+ (Equipe do Encontro)" required="" >
+                </div>
+            </div>
+
+            <input id="btnSubmit" type="submit" value="Enviar">
+        </form>
+    </div>
+
+
+    <div class="clear"></div>
+    <div class="footer-agilew3">
+        <p> &copy; 2018 TRMA Mobile Solutions. Todos os direitos reservados</p>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+        integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+        crossorigin="anonymous"></script>
+</body>
+</html>

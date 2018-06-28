@@ -11,6 +11,10 @@ admin.initializeApp(functions.config().firebase);
 /*############### User ###############*/
 app.route("/user")
     .get((req, res) => {
+        res.header('Content-Type', 'application/json');
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
+
         const userRef = admin.database().ref('/users');
         userRef
             .once('value')
@@ -30,6 +34,10 @@ app.route("/user")
             });
     })
     .post((req, res) => {
+        res.header('Content-Type', 'application/json');
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
+
         const userRef = admin.database().ref('/users');
 
         userRef.push({
@@ -50,6 +58,10 @@ app.route("/user")
         });
 
     }).put((req, res) => {
+    res.header('Content-Type', 'application/json');
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
     const userRef = admin.database().ref('/users/' + req.body.uid);
     userRef
         .once('value')
@@ -78,6 +90,10 @@ app.route("/user")
             return res.status(500).send({"success": false, "message": "Erro ao atualizar dados do usuário: " + error});
         });
 }).delete((req, res) => {
+    res.header('Content-Type', 'application/json');
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
     const userRef = admin.database().ref('/users/' + req.body.uid);
     userRef
         .remove()
@@ -93,6 +109,10 @@ app.route("/user")
 /*############### Event ###############*/
 app.route("/event")
     .get((req, res) => {
+        res.header('Content-Type', 'application/json');
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
+
         const eventRef = admin.database().ref('/events');
         eventRef
             .once('value')
@@ -112,6 +132,10 @@ app.route("/event")
             });
     })
     .post((req, res) => {
+        res.header('Content-Type', 'application/json');
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
+
         const eventRef = admin.database().ref('/events');
 
         eventRef.push({
@@ -132,6 +156,10 @@ app.route("/event")
         });
 
     }).put((req, res) => {
+    res.header('Content-Type', 'application/json');
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
     const eventRef = admin.database().ref('/events/' + req.body.uid);
     eventRef
         .once('value')
@@ -160,6 +188,10 @@ app.route("/event")
             return res.status(500).send({"success": false, "message": "Erro ao atualizar dados do usuário: " + error});
         });
 }).delete((req, res) => {
+    res.header('Content-Type', 'application/json');
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
     const eventRef = admin.database().ref('/events/' + req.body.uid);
     eventRef
         .remove()
@@ -175,6 +207,10 @@ app.route("/event")
 /*############### ECPC DATE ###############*/
 app.route("/ecpc/date")
     .get((req, res) => {
+        res.header('Content-Type', 'application/json');
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
+
         const dateRef = admin.database().ref('/ecpc/');
         dateRef
             .once('value')
@@ -182,8 +218,9 @@ app.route("/ecpc/date")
 
                 let ecpc_dates = [];
                 snapshot.forEach((data) => {
-                    let date = data.val();
+                    let date = {};
                     date.uid = data.key;
+                    date.ecpc_date = data.val().ecpc_date;
                     ecpc_dates.push(date)
                 });
                 return res.status(200).send({"success": true, "ecpc_dates": ecpc_dates});
@@ -194,6 +231,10 @@ app.route("/ecpc/date")
             });
     })
     .post((req, res) => {
+        res.header('Content-Type', 'application/json');
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
+
         const dateRef = admin.database().ref('/ecpc/');
 
         dateRef.push({ecpc_date: (req.body.ecpc_date !== null && req.body.ecpc_date !== undefined) ? req.body.ecpc_date : ""}).then(() => {
@@ -204,6 +245,10 @@ app.route("/ecpc/date")
         });
 
     }).put((req, res) => {
+    res.header('Content-Type', 'application/json');
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
     const dateRef = admin.database().ref('/ecpc/' + req.body.uid);
     dateRef
         .once('value')
@@ -231,6 +276,10 @@ app.route("/ecpc/date")
             });
         });
 }).delete((req, res) => {
+    res.header('Content-Type', 'application/json');
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
     const dateRef = admin.database().ref('/ecpc/' + req.body.uid);
     dateRef
         .remove()
@@ -250,6 +299,10 @@ app.route("/ecpc/date")
 /*############### ECPC MARRIES COUPLE ###############*/
 app.route("/ecpc/married_couple")
     .get((req, res) => {
+        res.header('Content-Type', 'application/json');
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
+
         const eventRef = admin.database().ref('/ecpc/' + req.query.ecpc_date_uid + "/married_couple");
         eventRef
             .once('value')
@@ -269,6 +322,10 @@ app.route("/ecpc/married_couple")
             });
     })
     .post((req, res) => {
+        res.header('Content-Type', 'application/json');
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
+
         const ecpcRef = admin.database().ref('/ecpc/' + req.body.ecpc_date_uid + "/married_couple");
 
         ecpcRef.push({
@@ -317,6 +374,10 @@ app.route("/ecpc/married_couple")
         });
 
     }).put((req, res) => {
+    res.header('Content-Type', 'application/json');
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
     const eventRef = admin.database().ref('/ecpc/' + req.body.ecpc_date_uid + "/married_couple" + "/" + req.body.uid);
     eventRef
         .once('value')
@@ -378,6 +439,10 @@ app.route("/ecpc/married_couple")
             });
         });
 }).delete((req, res) => {
+    res.header('Content-Type', 'application/json');
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
     const eventRef = admin.database().ref('/ecpc/' + req.body.ecpc_date_uid + "/married_couple" + "/" + req.body.uid);
     eventRef
         .remove()
@@ -395,6 +460,10 @@ app.route("/ecpc/married_couple")
 
 /*############### Send notification toi topic ###############*/
 app.post("/notification", (req, res) => {
+    res.header('Content-Type', 'application/json');
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
     const topic = "ecpc";
 
     admin.messaging().sendToTopic(topic, req.body)
@@ -411,6 +480,10 @@ app.post("/notification", (req, res) => {
 /*############### Send email to user ###############*/
 app.route("/email")
     .post((req, res) => {
+        res.header('Content-Type', 'application/json');
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
+
         const APP_NAME = 'PIB Arujá';
         const gmailEmail = functions.config().gmail.email;
         const gmailPassword = functions.config().gmail.password;
