@@ -52,9 +52,12 @@
                 $("#divCheck").html(html)
             });
 
-            $("#formEcpc").submit(function () {
+            $("#formEcpc").submit(function (event) {
 
-                $.post("https://us-central1-pibaruja-39957.cloudfunctions.net/app/ecpc/married_couple",
+                // Stop form from submitting normally
+                event.preventDefault();
+
+               let post = $.post("https://us-central1-pibaruja-39957.cloudfunctions.net/app/ecpc/married_couple",
                     {
                         ecpc_date_uid: ecpcDateUid,
                         ecpc_date: ecpcDate,
@@ -93,10 +96,11 @@
                         sponsor_name: $("#casal_responsavel_encontro").val(),
                         sponsor_telephone: $("#telefone_casal_responsavel_encontro").val(),
                         sponsor_email: $("#email_casal_responsavel_encontro").val(),
-                    },
-                    function (data, status) {
-                        console.log("data response", data);
                     });
+
+               post.done(function (data) {
+                   console.log("data response: ", data)
+               })
             });
         });
 
