@@ -42,11 +42,14 @@
                 let html = "";
                 for (let i = 0; i < data.ecpc_dates.length; i++) {
                     console.log("data:", data.ecpc_dates[i].ecpc_date);
-                    html += "<div style='float: left' id='div_checkbox_data_" + i + "' class=\"checkbox col-xs-12 col-sm-12 col-md-12 col-lg-12\" >" +
-                        "<label id='label_checkbox_data_" + i + "' style='color: #F0F8FF'>\n" + data.ecpc_dates[i].ecpc_date +
-                        "<input type=\"radio\" required name='radioDate' id='checkbox_data_" + i + "' value=\"" + data.ecpc_dates[i].ecpc_date + "," + data.ecpc_dates[i].uid + "\" id=\"ecpc\" onclick='setValueEcpcDate(this)'>" +
-                        "</label>" +
-                        "</div><br>"
+
+                    if (data.ecpc_dates[i].ecpc_date !== null && data.ecpc_dates[i].ecpc_date !== "") {
+                        html += "<div style='float: left' id='div_checkbox_data_" + i + "' class=\"checkbox col-xs-12 col-sm-12 col-md-12 col-lg-12\" >" +
+                            "<label id='label_checkbox_data_" + i + "' style='color: #F0F8FF'>\n" + data.ecpc_dates[i].ecpc_date +
+                            "<input type=\"radio\" required name='radioDate' id='checkbox_data_" + i + "' value=\"" + data.ecpc_dates[i].ecpc_date + "," + data.ecpc_dates[i].uid + "\" id=\"ecpc\" onclick='setValueEcpcDate(this)'>" +
+                            "</label>" +
+                            "</div><br>";
+                    }
 
                 }
                 $("#divCheck").html(html)
@@ -57,7 +60,7 @@
                 // Stop form from submitting normally
                 event.preventDefault();
 
-               let post = $.post("https://us-central1-pibaruja-39957.cloudfunctions.net/app/ecpc/married_couple",
+                let post = $.post("https://us-central1-pibaruja-39957.cloudfunctions.net/app/ecpc/married_couple",
                     {
                         ecpc_date_uid: ecpcDateUid,
                         ecpc_date: ecpcDate,
@@ -98,15 +101,66 @@
                         sponsor_email: $("#email_casal_responsavel_encontro").val(),
                     });
 
-               post.done(function (data) {
-                   console.log("data response: ", data)
-               })
+                post.done(function (data) {
+                    console.log("data response: ", data);
+                    let divMessageSuccess = $("#divMessageSuccess");
+                    let divMessageError = $("#divMessageError");
+                    let messageSuccess = $("#messageSuccess");
+                    let messageError = $("#messageError");
+
+                    if (data.success) {
+                        messageSuccess.html(data.message);
+                        divMessageSuccess.css("display", "block");
+                        divMessageError.css("display", "none");
+
+                    } else {
+                        messageError.html(data.message);
+                        divMessageError.css("display", "block");
+                        divMessageSuccess.css("display", "none");
+                    }
+                    clearData(data.message)
+                })
             });
         });
 
         function setValueEcpcDate(obj) {
             ecpcDate = obj.value.split(",")[0];
             ecpcDateUid = obj.value.split(",")[1];
+        }
+
+        function clearData() {
+            ecpcDateUid = "";
+            ecpcDate = "";
+            $("#nome_marido").val("");
+            $("#apelido_marido").val("");
+            $("#data_nascimento_marido").val("");
+            $("#denominacao_marido").val("");
+            $("#nome_pai_marido").val("");
+            $("#nome_mae_marido").val("");
+            $("#email_marido").val("");
+            $("#celular_marido").val("");
+            $("#observacoes_marido").val("");
+            $("#nome_esposa").val("");
+            $("#apelido_esposa").val("");
+            $("#data_nascimento_esposa").val("");
+            $("#denominacao_esposa").val("");
+            $("#nome_pai_esposa").val("");
+            $("#nome_mae_esposa").val("");
+            $("#email_esposa").val("");
+            $("#celular_esposa").val("");
+            $("#observacoes_esposa").val("");
+            $("#quantiade_filhos").val("");
+            $("#data_casamento").val("");
+            $("#telefone_fixo").val("");
+            $("#endereco").val("");
+            $("#cep").val("");
+            $("#numero").val("");
+            $("#bairro").val("");
+            $("#cidade").val("");
+            $("#estato").val("");
+            $("#casal_responsavel_encontro").val("");
+            $("#telefone_casal_responsavel_encontro").val("");
+            $("#email_casal_responsavel_encontro").val("");
         }
 
     </script>
@@ -118,9 +172,21 @@
 
     <div class="sign-up-agileinfo">
         <form id="formEcpc" method="post">
+            <div class="row">
+                <div class="alert alert-success col-xs-12 col-sm-12 col-md-12 col-lg-12" id="divMessageSuccess"
+                     style="display: none">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong id="messageSuccess">Title!</strong>
+                </div>
+                <div class="alert alert-success col-xs-12 col-sm-12 col-md-12 col-lg-12" id="divMessageError"
+                     style="display: none">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong id="messageError">Title!</strong>
+                </div>
+            </div>
 
             <div class="row">
-                <div  class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                     <div class="alert-warning">
                         <strong>Datas dsponíveis</strong>
                     </div>
@@ -130,10 +196,13 @@
 
             <div class="row">
                 <div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
-                    <input type="text" class="first name" id="nome_marido" name="nome_marido" placeholder="Nome Marido" required="" >
-                    <input type="text" class="last name" id="apelido_marido" name="apelido_marido" placeholder="Apelido Marido" required="" >
-                    <input type="date" style="width: 100%;" id="data_nascimento_marido" name="data_nascimento_marido" placeholder="Data de Nascimento Marido" required="" ><br><br>
-                    <select name="denominacao_marido" id="denominacao_marido" class="form-control" required >
+                    <input type="text" class="first name" id="nome_marido" name="nome_marido" placeholder="Nome Marido"
+                           required="">
+                    <input type="text" class="last name" id="apelido_marido" name="apelido_marido"
+                           placeholder="Apelido Marido" required="">
+                    <input type="date" style="width: 100%;" id="data_nascimento_marido" name="data_nascimento_marido"
+                           placeholder="Data de Nascimento Marido" required=""><br><br>
+                    <select name="denominacao_marido" id="denominacao_marido" class="form-control" required>
                         <option selected value="">Denominação (Igreja) Marido</option>
                         <option value="Nenhuma">Nenhuma</option>
                         <option value="Adventista">Adventista</option>
@@ -212,17 +281,25 @@
                         <option value="Universal R. de Deus">Universal R. de Deus</option>
                         <option value="Viver em Cristo">Viver em Cristo</option>
                     </select><br>
-                    <input type="email" style="width: 100%;" class="email" id="email_marido" name="email_marido" placeholder="Email Marido" required="" ><br><br>
-                    <input type="tel" style="width: 100%;" id="celular_marido" name="celular_marido" placeholder="Celular Marido" required="" ><br><br>
-                    <input type="text" class="last name" id="nome_pai_marido" name="nome_pai_marido" placeholder="Nome do Pai Marido" required="" >
-                    <input type="text" class="last name" id="nome_mae_marido" name="nome_mae_marido" placeholder="Nome da Mãe Marido" required="" >
-                    <textarea  style="width: 100%; height: 150px" id="observacoes_marido" name="observacoes_marido" placeholder="Indique abaixo se o marido possui alguma alergia a alimentos ou remédios. Solicitamnos especificarem também tratamentos médicos em andamento, remédio utilizados, etc." ></textarea>
+                    <input type="email" style="width: 100%;" class="email" id="email_marido" name="email_marido"
+                           placeholder="Email Marido" required=""><br><br>
+                    <input type="tel" style="width: 100%;" id="celular_marido" name="celular_marido"
+                           placeholder="Celular Marido" required=""><br><br>
+                    <input type="text" class="last name" id="nome_pai_marido" name="nome_pai_marido"
+                           placeholder="Nome do Pai Marido" required="">
+                    <input type="text" class="last name" id="nome_mae_marido" name="nome_mae_marido"
+                           placeholder="Nome da Mãe Marido" required="">
+                    <textarea style="width: 100%; height: 150px" id="observacoes_marido" name="observacoes_marido"
+                              placeholder="Indique abaixo se o marido possui alguma alergia a alimentos ou remédios. Solicitamnos especificarem também tratamentos médicos em andamento, remédio utilizados, etc."></textarea>
 
                 </div>
                 <div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
-                    <input type="text" class="first name" id="nome_esposa" name="nome_esposa" placeholder="Nome Esposa" required="" >
-                    <input type="text" class="last name" id="apelido_esposa" name="apelido_esposa" placeholder="Apelido Esposa" required="" >
-                    <input type="date" style="width: 100%;" id="data_nascimento_esposa" name="data_nascimento_esposa" placeholder="Data de Nascimento Esposa" required="" ><br><br>
+                    <input type="text" class="first name" id="nome_esposa" name="nome_esposa" placeholder="Nome Esposa"
+                           required="">
+                    <input type="text" class="last name" id="apelido_esposa" name="apelido_esposa"
+                           placeholder="Apelido Esposa" required="">
+                    <input type="date" style="width: 100%;" id="data_nascimento_esposa" name="data_nascimento_esposa"
+                           placeholder="Data de Nascimento Esposa" required=""><br><br>
                     <select name="denominacao_marido" id="denominacao_esposa" class="form-control" required>
                         <option selected value="">Denominação (Igreja) Esposa</option>
                         <option value="Nenhuma">Nenhuma</option>
@@ -301,12 +378,17 @@
                         <option value="Unida">Unida</option>
                         <option value="Universal R. de Deus">Universal R. de Deus</option>
                         <option value="Viver em Cristo">Viver em Cristo</option>
-                    </select ><br>
-                    <input type="email" style="width: 100%;" class="email" id="email_esposa" name="email_esposa" placeholder="Email Esposa" required="" ><br><br>
-                    <input type="tel" style="width: 100%;" id="celular_esposa" name="celular_esposa" placeholder="Celular Esposa" required="" ><br><br>
-                    <input type="text" class="last name" id="nome_pai_esposa" name="nome_pai_esposa" placeholder="Nome do Pai Esposa" required="" >
-                    <input type="text" class="last name" id="nome_mae_esposa" name="nome_mae_esposa" placeholder="Nome da Mãe Esposa" required="" >
-                    <textarea style="width: 100%; height: 150px"  id="observacoes_esposa" name="observacoes_esposa" placeholder="Indique abaixo se a esposa possui alguma alergia a alimentos ou remédios. Solicitamnos especificarem também tratamentos médicos em andamento, remédio utilizados, etc." ></textarea>
+                    </select><br>
+                    <input type="email" style="width: 100%;" class="email" id="email_esposa" name="email_esposa"
+                           placeholder="Email Esposa" required=""><br><br>
+                    <input type="tel" style="width: 100%;" id="celular_esposa" name="celular_esposa"
+                           placeholder="Celular Esposa" required=""><br><br>
+                    <input type="text" class="last name" id="nome_pai_esposa" name="nome_pai_esposa"
+                           placeholder="Nome do Pai Esposa" required="">
+                    <input type="text" class="last name" id="nome_mae_esposa" name="nome_mae_esposa"
+                           placeholder="Nome da Mãe Esposa" required="">
+                    <textarea style="width: 100%; height: 150px" id="observacoes_esposa" name="observacoes_esposa"
+                              placeholder="Indique abaixo se a esposa possui alguma alergia a alimentos ou remédios. Solicitamnos especificarem também tratamentos médicos em andamento, remédio utilizados, etc."></textarea>
                 </div>
             </div>
 
@@ -314,27 +396,34 @@
             <br>
             <div class="row">
                 <div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
-                    <input type="number" style="width: 100%;" id="quantiade_filhos" name="quantiade_filhos" placeholder="Quantos Filhos?" required="" ><br><br>
-                    <input type="date" id="data_casamento" style="width: 100%;" name="data_casamento" placeholder="Data do Casamento" required="" ><br><br>
-                    <input type="text" class="first name" id="telefone_fixo" name="telefone_fixo" placeholder="Telefone Fixo" >
+                    <input type="number" style="width: 100%;" id="quantiade_filhos" name="quantiade_filhos"
+                           placeholder="Quantos Filhos?" required=""><br><br>
+                    <input type="date" id="data_casamento" style="width: 100%;" name="data_casamento"
+                           placeholder="Data do Casamento" required=""><br><br>
+                    <input type="text" class="first name" id="telefone_fixo" name="telefone_fixo"
+                           placeholder="Telefone Fixo">
                 </div>
                 <div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
-                    <input type="text" class="first name" id="cep" name="cep" placeholder="CEP" required="" >
-                    <input type="text" class="first name" id="endereco" name="endereco" placeholder="Endereço" required="" >
-                    <input type="text" class="first name" id="numero" name="numero" placeholder="Número" required="" >
-                    <input type="text" class="first name" id="bairro" name="bairro" placeholder="Bairro" required="" >
-                    <input type="text" class="first name" id="cidade" name="cidade" placeholder="Cidade" required="" >
-                    <input type="text" class="first name" id="estato" name="estato" placeholder="Estado" required="" >
+                    <input type="text" class="first name" id="cep" name="cep" placeholder="CEP" required="">
+                    <input type="text" class="first name" id="endereco" name="endereco" placeholder="Endereço"
+                           required="">
+                    <input type="text" class="first name" id="numero" name="numero" placeholder="Número" required="">
+                    <input type="text" class="first name" id="bairro" name="bairro" placeholder="Bairro" required="">
+                    <input type="text" class="first name" id="cidade" name="cidade" placeholder="Cidade" required="">
+                    <input type="text" class="first name" id="estato" name="estato" placeholder="Estado" required="">
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <input type="text" class="first name" id="casal_responsavel_encontro" name="casal_responsavel_encontro" placeholder="Casal Responsável
- (Equipe do Encontro)" required="" >
-                    <input type="text" class="first name" id="telefone_casal_responsavel_encontro" name="telefone_casal_responsavel_encontro" placeholder="Telefone Casal Responsável
- (Equipe do Encontro)" required="" >
-                    <input type="text" class="first name" id="email_casal_responsavel_encontro" name="email_casal_responsavel_encontro" placeholder="Email Casal Responsável
- (Equipe do Encontro)" required="" >
+                    <input type="text" class="first name" id="casal_responsavel_encontro"
+                           name="casal_responsavel_encontro" placeholder="Casal Responsável
+ (Equipe do Encontro)" required="">
+                    <input type="text" class="first name" id="telefone_casal_responsavel_encontro"
+                           name="telefone_casal_responsavel_encontro" placeholder="Telefone Casal Responsável
+ (Equipe do Encontro)" required="">
+                    <input type="text" class="first name" id="email_casal_responsavel_encontro"
+                           name="email_casal_responsavel_encontro" placeholder="Email Casal Responsável
+ (Equipe do Encontro)" required="">
                 </div>
             </div>
 
