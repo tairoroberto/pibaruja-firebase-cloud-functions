@@ -107,19 +107,20 @@
                     let divMessageError = $("#divMessageError");
                     let messageSuccess = $("#messageSuccess");
                     let messageError = $("#messageError");
+                    let title = $("#title");
 
                     if (data.success) {
                         messageSuccess.html(data.message);
                         divMessageSuccess.css("display", "block");
                         divMessageError.css("display", "none");
-                        divMessageSuccess.focus();
 
                     } else {
                         messageError.html(data.message);
                         divMessageError.css("display", "block");
                         divMessageSuccess.css("display", "none");
-                        divMessageError.focus();
                     }
+
+                    $(window).scrollTop(title.offset().top);
                     clearData(data.message)
                 })
             });
@@ -165,11 +166,16 @@
             $("#email_casal_responsavel_encontro").val("");
         }
 
+        function formatDate(dateString) {
+            let date = new Date(dateString);
+            return date.getDate() + "/" + (date.getMonth() + 1) +"/" + date.getFullYear()
+        }
+
     </script>
 </head>
 
 <body>
-<h1>Inscrição Encontristas</h1>
+<h1 id="title">Inscrição Encontristas</h1>
 <div class="container">
 
     <div class="sign-up-agileinfo">
