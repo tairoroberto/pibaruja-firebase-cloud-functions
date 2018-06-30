@@ -16,20 +16,20 @@
     <script defer src="/__/firebase/init.js"></script>
 
 
-    <link href="../css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="../assets/css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all"/>
     <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic'
           rel='stylesheet' type='text/css'>
     <link href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,900,700italic,900italic'
           rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
           integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
 
     <!-- For-Mobile-Apps-and-Meta-Tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-    <script src="../js/jquery.min.js"></script>
+    <script src="../assets/js/jquery.min.js"></script>
     <script>
 
         let ecpcDate;
@@ -45,7 +45,7 @@
                     if (data.ecpc_dates[i].ecpc_date !== null && data.ecpc_dates[i].ecpc_date !== "") {
                         html += "<div style='float: left' id='div_checkbox_data_" + i + "' class=\"checkbox col-xs-12 col-sm-12 col-md-12 col-lg-12\" >" +
                             "<label id='label_checkbox_data_" + i + "' style='color: #F0F8FF'>\n" + data.ecpc_dates[i].ecpc_date +
-                            "<input type=\"radio\" required name='radioDate' id='checkbox_data_" + i + "' value=\"" + data.ecpc_dates[i].ecpc_date + "," + data.ecpc_dates[i].uid + "\" id=\"ecpc\" onclick='getUserByDAte(this)'>" +
+                            "&nbsp;<input type=\"radio\" required name='radioDate' id='checkbox_data_" + i + "' value=\"" + data.ecpc_dates[i].ecpc_date + "," + data.ecpc_dates[i].uid + "\" id=\"ecpc\" onclick='getUserByDAte(this)'>" +
                             "</label>" +
                             "</div><br>";
                     }
@@ -64,10 +64,11 @@
                     let ecpc = data.ecpc[i];
 
                     html +=
+
+                        "<div class=\"alert alert-info\">\n" +
                         "<div class=\"alert alert-info\" align=\"center\">\n" +
                         "    Data do encontro:&nbsp;<strong>" + ecpc.ecpc_date + "</strong>\n" +
                         "</div>\n" +
-                        "<div class=\"alert alert-info\">\n" +
                         "    <div class=\"row\">\n" +
                         "        <!-- MARIDO -->\n" +
                         "        <div class=\"col-xs-6 col-sm-12 col-md-12 col-lg-6\">\n" +
@@ -214,7 +215,7 @@
 
     <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <div class="alert-warning">
+            <div class="alert alert-warning">
                 <strong>Datas dsponíveis</strong>
             </div>
             <div id="divCheck" class="row"></div>
