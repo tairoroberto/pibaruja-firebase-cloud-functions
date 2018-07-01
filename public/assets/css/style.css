@@ -25,6 +25,10 @@ ol, ul {
     padding: 0px;
 }
 
+strong {
+    font-weight: bold;
+}
+
 blockquote, q {
     quotes: none;
 }

@@ -210,35 +210,68 @@
             });
         }
 
+        function validateLogin() {
+            let user = $("#user").val();
+            let password = $("#password").val();
+
+            if (user !== null && user !== "" && password !== null && password !== "" && user === "admin" && password === "admin123456") {
+                $("#panelUsers").css("display", "block");
+                $("#divLogin").css("display", "none");
+            } else {
+                alert("Usuaário ou Senha inválidos!")
+            }
+        }
+
     </script>
 </head>
 <body>
 <br>
 <div class="container">
 
-    <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <div class="alert alert-warning">
-                <strong>Datas dsponíveis</strong>
+    <div class="panel panel-default" id="panelUsers" style="display: none">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div class="alert alert-warning">
+                        <strong>Datas dsponíveis</strong>
+                    </div>
+                    <div class="progress" id="progressBar">
+                        <div class="progress-bar progress-bar-striped active progress-bar-animated bg-info"
+                             role="progressbar"
+                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                        </div>
+                    </div>
+                    <div id="divCheck" class="row"></div>
+                </div>
             </div>
-            <div class="progress" id="progressBar">
+
+            <br>
+
+            <div class="progress" id="progressBarUsers" style="width: 0px">
                 <div class="progress-bar progress-bar-striped active progress-bar-animated bg-info" role="progressbar"
                      aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
                 </div>
             </div>
-            <div id="divCheck" class="row"></div>
+            <br>
+            <div id="users"></div>
         </div>
     </div>
 
-    <br>
+    <div class="container" id="divLogin">
+        <div class="sign-up-agileinfo">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" align="center">
+                <form action="" method="post" role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="" id="user" placeholder="Usuário">
+                        <input type="password" class="form-control" name="" id="password" placeholder="Senha">
+                    </div>
 
-    <div class="progress" id="progressBarUsers" style="width: 0px">
-        <div class="progress-bar progress-bar-striped active progress-bar-animated bg-info" role="progressbar"
-             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                    <button type="button" class="btn btn-primary" onclick="validateLogin()">Entrar</button>
+                </form>
+            </div>
         </div>
+
     </div>
-    <br>
-    <div id="users"></div>
 
 </div>
 
