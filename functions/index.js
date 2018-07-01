@@ -395,7 +395,7 @@ app.route("/ecpc/married_couple")
                 "          integrity=\"sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm\" crossorigin=\"anonymous\">\n" +
                 "</head>\n" +
                 "<body>\n" +
-                "<br>\n" +
+                "<br><br>\n" +
                 "<div class=\"alert alert-info\" align=\"center\">\n" +
                 "    <strong>NOVO ENCONTRISTA</strong>\n" +
                 "</div>\n" +
@@ -689,7 +689,7 @@ app.route("/email")
         });
 
         const mailOptions = {
-            from: `${APP_NAME} <fsoare32@gmail.com>`,
+            from: `${APP_NAME} <mcpibaruja@gmail.com>`,
             to: req.body.email,
         };
 
