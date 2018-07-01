@@ -58,6 +58,12 @@
 
             $("#formEcpc").submit(function (event) {
 
+                let progressBarSubmit = $("#progressBarSubmit");
+                let btnSubmit = $("#btnSubmit");
+
+                btnSubmit.css("display", "none");
+                progressBarSubmit.css("width", "300px");
+
                 // Stop form from submitting normally
                 event.preventDefault();
 
@@ -122,7 +128,9 @@
                     }
 
                     $(window).scrollTop(title.offset().top);
-                    clearData(data.message)
+                    clearData(data.message);
+                    btnSubmit.css("display", "block");
+                    progressBarSubmit.css("width", "0px");
                 })
             });
         });
@@ -200,12 +208,14 @@
                         <strong>Datas dsponíveis</strong>
                     </div>
                     <div class="progress" id="progressBar">
-                        <div class="progress-bar progress-bar-striped active progress-bar-animated bg-info" role="progressbar"
+                        <div class="progress-bar progress-bar-striped active progress-bar-animated bg-info"
+                             role="progressbar"
                              aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
                         </div>
                     </div>
 
-                    <div id="divCheck" class="row"></div><br>
+                    <div id="divCheck" class="row"></div>
+                    <br>
                 </div>
             </div>
 
@@ -442,7 +452,16 @@
                 </div>
             </div>
 
-            <input id="btnSubmit" type="submit" value="Enviar">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" align="center">
+                    <div class="progress" id="progressBarSubmit" style="width: 0px;">
+                        <div class="progress-bar progress-bar-striped active progress-bar-animated bg-info" role="progressbar"
+                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                        </div>
+                    </div>
+                    <input id="btnSubmit" type="submit" value="Enviar">
+                </div>
+            </div>
 
             <br>
             <br>
@@ -480,8 +499,7 @@
                         <li class="list-group-item d-flex  align-items-center">
                             <a href="assets/Ficha.DOC">
                                 <img alt="" data-type="image" src="assets/images/docx.png"
-                                     style="width: 33px; height: 33px; object-fit: fill; float: left"
-                                     onclick="downloadDoc();">
+                                     style="width: 33px; height: 33px; object-fit: fill; float: left">
                             </a>
                         </li>
                     </ul>

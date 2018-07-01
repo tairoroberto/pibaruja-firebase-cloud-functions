@@ -69,7 +69,7 @@
 
                         "<div class=\"alert alert-info\">\n" +
                         "<div class=\"alert alert-info\" align=\"center\">\n" +
-                        "    Data do encontro:&nbsp;<strong>" + ecpc.ecpc_date + "</strong>\n" +
+                        "<span class='badge badge-primary' style='float:left;'>" + (i + 1) + "</span>Data do encontro:&nbsp;<strong>" + ecpc.ecpc_date + "</strong>" +
                         "</div>\n" +
                         "    <div class=\"row\">\n" +
                         "        <!-- MARIDO -->\n" +
@@ -205,6 +205,11 @@
                         "    </div>\n" +
                         "</div>\n";
                 }
+
+                html = "<div class=\"alert alert-info\" align=\"center\">\n" +
+                    "Número de casais:&nbsp;<span class='badge badge-primary'>" + data.ecpc.length + "</span>" +
+                    "</div>\n" + html;
+
                 $("#users").html(html);
                 $("#progressBarUsers").css("width", "0px");
             });
