@@ -145,7 +145,6 @@ app.route("/event")
             description: (req.body.description !== null && req.body.description !== undefined) ? req.body.description : "",
             date: (req.body.date !== null && req.body.date !== undefined) ? req.body.date : "",
             image: (req.body.image !== null && req.body.image !== undefined) ? req.body.image : "",
-            video: (req.body.video !== null && req.body.video !== undefined) ? req.body.video : "",
             local: (req.body.local !== null && req.body.local !== undefined) ? req.body.local : "",
             sponsor: (req.body.sponsor !== null && req.body.sponsor !== undefined) ? req.body.sponsor : "",
             contact: (req.body.contact !== null && req.body.contact !== undefined) ? req.body.contact : "",
@@ -171,7 +170,6 @@ app.route("/event")
             event.description = (req.body.description !== null && req.body.description !== undefined) ? req.body.description : "";
             event.date = (req.body.date !== null && req.body.date !== undefined) ? req.body.date : "";
             event.image = (req.body.image !== null && req.body.image !== undefined) ? req.body.image : "";
-            event.video = (req.body.video !== null && req.body.video !== undefined) ? req.body.video : "";
             event.local = (req.body.local !== null && req.body.local !== undefined) ? req.body.local : "";
             event.sponsor = (req.body.sponsor !== null && req.body.sponsor !== undefined) ? req.body.sponsor : "";
             event.contact = (req.body.contact !== null && req.body.contact !== undefined) ? req.body.contact : "";
