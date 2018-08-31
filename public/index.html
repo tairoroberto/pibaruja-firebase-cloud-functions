@@ -16,21 +16,21 @@
     <script defer src="/__/firebase/init.js"></script>
 
 
-    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all"/>
     <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic'
           rel='stylesheet' type='text/css'>
     <link href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,900,700italic,900italic'
           rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
           integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 
     <!-- For-Mobile-Apps-and-Meta-Tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
     <!-- //For-Mobile-Apps-and-Meta-Tags -->
-    <script src="js/jquery.min.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
     <script>
 
         let ecpcDate;
@@ -47,11 +47,12 @@
                             "<label id='label_checkbox_data_" + i + "' style='color: #F0F8FF'>\n" + data.ecpc_dates[i].ecpc_date +
                             "&nbsp;<input type=\"radio\" required name='radioDate' id='checkbox_data_" + i + "' value=\"" + data.ecpc_dates[i].ecpc_date + "," + data.ecpc_dates[i].uid + "\" id=\"ecpc\" onclick='setValueEcpcDate(this)'>" +
                             "</label>" +
-                            "</div><br>";
+                            "</div><br><br>";
                     }
 
                 }
-                $("#divCheck").html(html)
+                $("#divCheck").html(html);
+                $("#progressBar").css("display", "none");
             });
         }
 
@@ -60,6 +61,12 @@
             getDataOnServer();
 
             $("#formEcpc").submit(function (event) {
+
+                let progressBarSubmit = $("#progressBarSubmit");
+                let btnSubmit = $("#btnSubmit");
+
+                btnSubmit.css("display", "none");
+                progressBarSubmit.css("width", "300px");
 
                 // Stop form from submitting normally
                 event.preventDefault();
@@ -130,7 +137,9 @@
                     }
 
                     $(window).scrollTop(title.offset().top);
-                    clearData(data.message)
+                    clearData(data.message);
+                    btnSubmit.css("display", "block");
+                    progressBarSubmit.css("width", "0px");
                 })
             });
         });
@@ -177,7 +186,7 @@
 
         function formatDate(dateString) {
             let date = new Date(dateString);
-            return date.getDate() + "/" + (date.getMonth() + 1) +"/" + date.getFullYear()
+            return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
         }
 
     </script>
@@ -204,10 +213,18 @@
 
             <div class="row" >
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <div class="alert-warning">
-                        <strong>Datas dsponíveis</strong>
+                    <div class="alert alert-warning">
+                        <strong>Datas disponíveis</strong>
                     </div>
+                    <div class="progress" id="progressBar">
+                        <div class="progress-bar progress-bar-striped active progress-bar-animated bg-info"
+                             role="progressbar"
+                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                        </div>
+                    </div>
+
                     <div id="divCheck" class="row" style="float: left"></div>
+                    <br>
                 </div>
             </div>
 
@@ -449,7 +466,59 @@
                 </div>
             </div>
 
-            <input id="btnSubmit" type="submit" value="Enviar">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" align="center">
+                    <div class="progress" id="progressBarSubmit" style="width: 0px;">
+                        <div class="progress-bar progress-bar-striped active progress-bar-animated bg-info" role="progressbar"
+                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                        </div>
+                    </div>
+                    <input id="btnSubmit" type="submit" value="Enviar">
+                </div>
+            </div>
+
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex  align-items-center">
+                            <div class="alert ">
+                                Antecipe sua Inscrição entrando em contato com o número abaixo:
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex  align-items-center">
+                            <img alt="" data-type="image" src="assets/images/whattsapp.png"
+                                 style="width: 33px; height: 33px; object-fit: fill;">
+                            <strong>+55 (11)&nbsp;98890 - 3821 </strong>
+                        </li>
+                        <li class="list-group-item d-flex  align-items-center">
+                            Conta para Depósito da inscrição
+                        </li>
+                        <li class="list-group-item d-flex  align-items-center">
+                            <img alt="" data-type="image" src="assets/images/bradesco.png"
+                                 style="width: 54px; height: 43px; object-fit: fill;">
+                            <strong style="float:left;">&nbsp;&nbsp;Agencia: 1977</strong><br>
+                            <strong style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;C/C: 10668-2</strong>
+                        <li class="list-group-item d-flex  align-items-center">
+                            Favorecido: Andreia Lopes Jatobá de Assis
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex  align-items-center">
+                            <a href="assets/Ficha.DOC">
+                                <img alt="" data-type="image" src="assets/images/docx.png"
+                                     style="width: 33px; height: 33px; object-fit: fill; float: left">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </form>
     </div>
 

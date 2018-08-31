@@ -16,20 +16,20 @@
     <script defer src="/__/firebase/init.js"></script>
 
 
-    <link href="../css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="../assets/css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all"/>
     <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic'
           rel='stylesheet' type='text/css'>
     <link href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,900,700italic,900italic'
           rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
           integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
 
     <!-- For-Mobile-Apps-and-Meta-Tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-    <script src="../js/jquery.min.js"></script>
+    <script src="../assets/js/jquery.min.js"></script>
     <script>
 
         let ecpcDate;
@@ -45,17 +45,19 @@
                     if (data.ecpc_dates[i].ecpc_date !== null && data.ecpc_dates[i].ecpc_date !== "") {
                         html += "<div style='float: left' id='div_checkbox_data_" + i + "' class=\"checkbox col-xs-12 col-sm-12 col-md-12 col-lg-12\" >" +
                             "<label id='label_checkbox_data_" + i + "' style='color: #F0F8FF'>\n" + data.ecpc_dates[i].ecpc_date +
-                            "<input type=\"radio\" required name='radioDate' id='checkbox_data_" + i + "' value=\"" + data.ecpc_dates[i].ecpc_date + "," + data.ecpc_dates[i].uid + "\" id=\"ecpc\" onclick='getUserByDAte(this)'>" +
+                            "&nbsp;<input type=\"radio\" required name='radioDate' id='checkbox_data_" + i + "' value=\"" + data.ecpc_dates[i].ecpc_date + "," + data.ecpc_dates[i].uid + "\" id=\"ecpc\" onclick='getUserByDAte(this)'>" +
                             "</label>" +
                             "</div><br>";
                     }
 
                 }
-                $("#divCheck").html(html)
+                $("#divCheck").html(html);
+                $("#progressBar").css("display", "none");
             });
         });
 
         function getUserByDAte(obj) {
+            $("#progressBarUsers").css("width", "100%");
             let dateUid = obj.value.split(",")[1];
             $.get("https://us-central1-pibaruja-39957.cloudfunctions.net/app/ecpc/married_couple?ecpc_date_uid=" + dateUid, function (data, status) {
                 let html = "";
@@ -64,10 +66,11 @@
                     let ecpc = data.ecpc[i];
 
                     html +=
-                        "<div class=\"alert alert-info\" align=\"center\">\n" +
-                        "    Data do encontro:&nbsp;<strong>" + ecpc.ecpc_date + "</strong>\n" +
-                        "</div>\n" +
+
                         "<div class=\"alert alert-info\">\n" +
+                        "<div class=\"alert alert-info\" align=\"center\">\n" +
+                        "<span class='badge badge-primary' style='float:left;'>" + (i + 1) + "</span>Data do encontro:&nbsp;<strong>" + ecpc.ecpc_date + "</strong>" +
+                        "</div>\n" +
                         "    <div class=\"row\">\n" +
                         "        <!-- MARIDO -->\n" +
                         "        <div class=\"col-xs-6 col-sm-12 col-md-12 col-lg-6\">\n" +
@@ -202,8 +205,26 @@
                         "    </div>\n" +
                         "</div>\n";
                 }
-                $("#users").html(html)
+
+                html = "<div class=\"alert alert-info\" align=\"center\">\n" +
+                    "Número de casais:&nbsp;<span class='badge badge-primary'>" + data.ecpc.length + "</span>" +
+                    "</div>\n" + html;
+
+                $("#users").html(html);
+                $("#progressBarUsers").css("width", "0px");
             });
+        }
+
+        function validateLogin() {
+            let user = $("#user").val();
+            let password = $("#password").val();
+
+            if (user !== null && user !== "" && password !== null && password !== "" && user === "admin" && password === "admin123456") {
+                $("#panelUsers").css("display", "block");
+                $("#divLogin").css("display", "none");
+            } else {
+                alert("Usuaário ou Senha inválidos!")
+            }
         }
 
     </script>
@@ -212,17 +233,50 @@
 <br>
 <div class="container">
 
-    <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <div class="alert-warning">
-                <strong>Datas dsponíveis</strong>
+    <div class="panel panel-default" id="panelUsers" style="display: none">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div class="alert alert-warning">
+                        <strong>Datas dsponíveis</strong>
+                    </div>
+                    <div class="progress" id="progressBar">
+                        <div class="progress-bar progress-bar-striped active progress-bar-animated bg-info"
+                             role="progressbar"
+                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                        </div>
+                    </div>
+                    <div id="divCheck" class="row"></div>
+                </div>
             </div>
-            <div id="divCheck" class="row"></div>
+
+            <br>
+
+            <div class="progress" id="progressBarUsers" style="width: 0px">
+                <div class="progress-bar progress-bar-striped active progress-bar-animated bg-info" role="progressbar"
+                     aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                </div>
+            </div>
+            <br>
+            <div id="users"></div>
         </div>
     </div>
 
-    <br>
-    <div id="users"></div>
+    <div class="container" id="divLogin">
+        <div class="sign-up-agileinfo">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" align="center">
+                <form action="" method="post" role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="" id="user" placeholder="Usuário">
+                        <input type="password" class="form-control" name="" id="password" placeholder="Senha">
+                    </div>
+
+                    <button type="button" class="btn btn-primary" onclick="validateLogin()">Entrar</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
 
 </div>
 
