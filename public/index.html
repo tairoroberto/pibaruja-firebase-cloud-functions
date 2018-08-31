@@ -36,17 +36,16 @@
         let ecpcDate;
         let ecpcDateUid;
 
-        $(document).ready(function (c) {
-
+        function getDataOnServer() {
             $.get("https://us-central1-pibaruja-39957.cloudfunctions.net/app/ecpc/date", function (data, status) {
                 let html = "";
                 for (let i = 0; i < data.ecpc_dates.length; i++) {
                     console.log("data:", data.ecpc_dates[i].ecpc_date);
 
                     if (data.ecpc_dates[i].ecpc_date !== null && data.ecpc_dates[i].ecpc_date !== "") {
-                        html += "<div style='float: left' id='div_checkbox_data_" + i + "' class=\"checkbox col-xs-12 col-sm-12 col-md-12 col-lg-12\" >" +
+                        html += "\"<br><br><div style='float: left' id='div_checkbox_data_" + i + "' class=\"checkbox col-xs-12 col-sm-12 col-md-12 col-lg-12\" >" +
                             "<label id='label_checkbox_data_" + i + "' style='color: #F0F8FF'>\n" + data.ecpc_dates[i].ecpc_date +
-                            "<input type=\"radio\" required name='radioDate' id='checkbox_data_" + i + "' value=\"" + data.ecpc_dates[i].ecpc_date + "," + data.ecpc_dates[i].uid + "\" id=\"ecpc\" onclick='setValueEcpcDate(this)'>" +
+                            "&nbsp;<input type=\"radio\" required name='radioDate' id='checkbox_data_" + i + "' value=\"" + data.ecpc_dates[i].ecpc_date + "," + data.ecpc_dates[i].uid + "\" id=\"ecpc\" onclick='setValueEcpcDate(this)'>" +
                             "</label>" +
                             "</div><br>";
                     }
@@ -54,11 +53,21 @@
                 }
                 $("#divCheck").html(html)
             });
+        }
+
+        $(document).ready(function (c) {
+
+            getDataOnServer();
 
             $("#formEcpc").submit(function (event) {
 
                 // Stop form from submitting normally
                 event.preventDefault();
+
+                if ((ecpcDate == null || ecpcDate === undefined) || (ecpcDateUid == null || ecpcDateUid === undefined)){
+                    getDataOnServer();
+                    $("#checkbox_data_0").click();
+                }
 
                 let post = $.post("https://us-central1-pibaruja-39957.cloudfunctions.net/app/ecpc/married_couple",
                     {
@@ -193,21 +202,23 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" >
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                     <div class="alert-warning">
                         <strong>Datas dsponíveis</strong>
                     </div>
-                    <div id="divCheck" class="row"></div>
+                    <div id="divCheck" class="row" style="float: left"></div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
+                    <br>
                     <input type="text" class="first name" id="nome_marido" name="nome_marido" placeholder="Nome Marido"
                            required="">
                     <input type="text" class="last name" id="apelido_marido" name="apelido_marido"
                            placeholder="Apelido Marido" required="">
+                    <label for="data_nascimento_marido" style="float: left; color: #FFFFFF">Data de Nascimento Marido</label>
                     <input type="date" style="width: 100%;" id="data_nascimento_marido" name="data_nascimento_marido"
                            placeholder="Data de Nascimento Marido" required=""><br><br>
                     <select name="denominacao_marido" id="denominacao_marido" class="form-control" required>
@@ -302,10 +313,12 @@
 
                 </div>
                 <div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
+                    <br>
                     <input type="text" class="first name" id="nome_esposa" name="nome_esposa" placeholder="Nome Esposa"
                            required="">
                     <input type="text" class="last name" id="apelido_esposa" name="apelido_esposa"
                            placeholder="Apelido Esposa" required="">
+                    <label for="data_nascimento_esposa" style="float: left; color: #FFFFFF">Data de Nascimento Esposa</label>
                     <input type="date" style="width: 100%;" id="data_nascimento_esposa" name="data_nascimento_esposa"
                            placeholder="Data de Nascimento Esposa" required=""><br><br>
                     <select name="denominacao_marido" id="denominacao_esposa" class="form-control" required>
@@ -406,6 +419,7 @@
                 <div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
                     <input type="number" style="width: 100%;" id="quantiade_filhos" name="quantiade_filhos"
                            placeholder="Quantos Filhos?" required=""><br><br>
+                    <label for="data_casamento" style="float: left; color: #FFFFFF">Data do Casamento</label>
                     <input type="date" id="data_casamento" style="width: 100%;" name="data_casamento"
                            placeholder="Data do Casamento" required=""><br><br>
                     <input type="text" class="first name" id="telefone_fixo" name="telefone_fixo"
