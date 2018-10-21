@@ -12,10 +12,10 @@
   "dependencies": {
     "express": "4.16.3",
     "firebase-admin": "~5.12.1",
-    "firebase-functions": "^1.0.3",
+    "firebase-functions": "^1.1.0",
     "node-rest-client": "3.1.0",
-    "nodemailer": "^4.0.1",
-    "request": "^2.87.0",
+    "nodemailer": "^4.6.8",
+    "request": "^2.88.0",
     "request-promise": "^4.2.2"
   },
   "devDependencies": {

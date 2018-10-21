@@ -329,238 +329,40 @@ app.route("/ecpc/married_couple")
             });
     })
     .post((req, res) => {
+
         res.header('Content-Type', 'application/json');
         res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Headers', 'Content-Type');
 
-        const ecpcRef = admin.database().ref('/ecpc/' + req.body.ecpc_date_uid + "/married_couple");
-
-        ecpcRef.push({
-            ecpc_date_uid: (req.body.ecpc_date_uid !== null && req.body.ecpc_date_uid !== undefined) ? req.body.ecpc_date_uid : "",
-            ecpc_date: (req.body.ecpc_date !== null && req.body.ecpc_date !== undefined) ? req.body.ecpc_date : "",
-            husband_name: (req.body.husband_name !== null && req.body.husband_name !== undefined) ? req.body.husband_name : "",
-            husband_nickname: (req.body.husband_nickname !== null && req.body.husband_nickname !== undefined) ? req.body.husband_nickname : "",
-            husband_birthday: (req.body.husband_birthday !== null && req.body.husband_birthday !== undefined) ? formatDate(req.body.husband_birthday) : "",
-            husband_church: (req.body.husband_church !== null && req.body.husband_church !== undefined) ? req.body.husband_church : "",
-            husband_father: (req.body.husband_father !== null && req.body.husband_father !== undefined) ? req.body.husband_father : "",
-            husband_mother: (req.body.husband_mother !== null && req.body.husband_mother !== undefined) ? req.body.husband_mother : "",
-            husband_email: (req.body.husband_email !== null && req.body.husband_email !== undefined) ? req.body.husband_email : "",
-            husband_cellphone: (req.body.husband_cellphone !== null && req.body.husband_cellphone !== undefined) ? req.body.husband_cellphone : "",
-            husband_observations: (req.body.husband_observations !== null && req.body.husband_observations !== undefined) ? req.body.husband_observations : "",
-
-            wife_name: (req.body.wife_name !== null && req.body.wife_name !== undefined) ? req.body.wife_name : "",
-            wife_nickname: (req.body.wife_nickname !== null && req.body.wife_nickname !== undefined) ? req.body.wife_nickname : "",
-            wife_birthday: (req.body.wife_birthday !== null && req.body.wife_birthday !== undefined) ? formatDate(req.body.wife_birthday) : "",
-            wife_church: (req.body.wife_church !== null && req.body.wife_church !== undefined) ? req.body.wife_church : "",
-            wife_father: (req.body.wife_father !== null && req.body.wife_father !== undefined) ? req.body.wife_father : "",
-            wife_mother: (req.body.wife_mother !== null && req.body.wife_mother !== undefined) ? req.body.wife_mother : "",
-            wife_email: (req.body.wife_email !== null && req.body.wife_email !== undefined) ? req.body.wife_email : "",
-            wife_cellphone: (req.body.wife_cellphone !== null && req.body.wife_cellphone !== undefined) ? req.body.wife_cellphone : "",
-            wife_observations: (req.body.wife_observations !== null && req.body.wife_observations !== undefined) ? req.body.wife_observations : "",
-
-            kids: (req.body.kids !== null && req.body.kids !== undefined) ? req.body.kids : "",
-            marriage_date: (req.body.marriage_date !== null && req.body.marriage_date !== undefined) ? formatDate(req.body.marriage_date) : "",
-            fixed_phone: (req.body.fixed_phone !== null && req.body.fixed_phone !== undefined) ? req.body.fixed_phone : "",
-
-            address: (req.body.address !== null && req.body.address !== undefined) ? req.body.address : "",
-            address_number: (req.body.address_number !== null && req.body.address_number !== undefined) ? req.body.address_number : "",
-            cep: (req.body.cep !== null && req.body.cep !== undefined) ? req.body.cep : "",
-            district: (req.body.district !== null && req.body.district !== undefined) ? req.body.district : "",
-            city: (req.body.city !== null && req.body.city !== undefined) ? req.body.city : "",
-            state: (req.body.state !== null && req.body.state !== undefined) ? req.body.state : "",
-            complement: (req.body.complement !== null && req.body.complement !== undefined) ? req.body.complement : "",
-
-            sponsor_name: (req.body.sponsor_name !== null && req.body.sponsor_name !== undefined) ? req.body.sponsor_name : "",
-            sponsor_telephone: (req.body.sponsor_telephone !== null && req.body.sponsor_telephone !== undefined) ? req.body.sponsor_telephone : "",
-            sponsor_email: (req.body.sponsor_email !== null && req.body.sponsor_email !== undefined) ? req.body.sponsor_email : "",
-
-            created_at: new Date(Date.now()).toISOString()
-        }).then(() => {
-            let ecpc = req.body;
-
-            let message = "<!DOCTYPE html>\n" +
-                "<html lang=\"en\">\n" +
-                "<head>\n" +
-                "    <meta charset=\"utf-8\">\n" +
-                "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
-                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
-                "    <meta name=\"description\" content=\"Page Description\">\n" +
-                "    <meta name=\"author\" content=\"tairo\">\n" +
-                "    <title>Page Title</title>\n" +
-                "\n" +
-                "    <!-- Bootstrap -->\n" +
-                "    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\"\n" +
-                "          integrity=\"sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm\" crossorigin=\"anonymous\">\n" +
-                "</head>\n" +
-                "<body>\n" +
-                "<br><br>\n" +
-                "<div class=\"alert alert-info\" align=\"center\">\n" +
-                "    <strong>NOVO ENCONTRISTA</strong>\n" +
-                "</div>\n" +
-                "<div class=\"alert alert-info\" align=\"center\">\n" +
-                "    Data do encontro:&nbsp;<strong>" + ecpc.ecpc_date + "</strong>\n" +
-                "</div>\n" +
-                "<div class=\"alert alert-info\">\n" +
-                "    <div class=\"row\">\n" +
-                "        <!-- MARIDO -->\n" +
-                "        <div class=\"col-xs-6 col-sm-12 col-md-12 col-lg-6\">\n" +
-                "            <ul class=\"list-group\">\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Nome Marido:&nbsp;<strong> " + ecpc.husband_name + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Apelido Marido:&nbsp;<strong> " + ecpc.husband_nickname + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Data de Nascimento Marido:&nbsp;<strong> " + ecpc.husband_birthday + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Denominação (Igreja) Marido:&nbsp;<strong> " + ecpc.husband_church + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Email Marido:&nbsp;<strong> " + ecpc.husband_email + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Celular Marido:&nbsp;<strong> " + ecpc.husband_cellphone + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Nome do Pai Marido:&nbsp;<strong> " + ecpc.husband_father + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Nome da Mãe Marido:&nbsp;<strong> " + ecpc.husband_mother + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Observações A respeito do Marido:&nbsp;<strong> " + ecpc.husband_observations + "</strong>\n" +
-                "                </li>\n" +
-                "            </ul>\n" +
-                "        </div>\n" +
-                "\n" +
-                "        <!-- ESPOSA -->\n" +
-                "        <div class=\"col-xs-6 col-sm-12 col-md-12 col-lg-6\">\n" +
-                "            <ul class=\"list-group\">\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Nome Esposa:&nbsp;<strong> " + ecpc.wife_name + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Apelido Esposa:&nbsp;<strong> " + ecpc.wife_nickname + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Data de Nascimento Esposa:&nbsp;<strong> " + ecpc.wife_birthday + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Denominação (Igreja) Esposa:&nbsp;<strong> " + ecpc.wife_church + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Email Esposa:&nbsp;<strong> " + ecpc.wife_email + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Celular Esposa:&nbsp;<strong> " + ecpc.wife_cellphone + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Nome do Pai Esposa:&nbsp;<strong> " + ecpc.wife_father + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Nome da Mãe Esposa:&nbsp;<strong> " + ecpc.wife_mother + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Observações A respeito da Esposa:&nbsp;<strong> " + ecpc.wife_observations + "</strong>\n" +
-                "                </li>\n" +
-                "            </ul>\n" +
-                "        </div>\n" +
-                "\n" +
-                "        <div class=\"row\">\n" +
-                "            <div class=\"alert\">\n" +
-                "            </div>\n" +
-                "        </div>\n" +
-                "\n" +
-                "        <!-- RESPONSAVEIS  -->\n" +
-                "        <div class=\"col-xs-12 col-sm-1 col-md-12 col-lg-12\">\n" +
-                "            <ul class=\"list-group\">\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Quantos Filhos?:&nbsp;<strong>" + ecpc.kids + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Data do Casamento:&nbsp;<strong>" + ecpc.marriage_date + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Telefone Fixo:&nbsp;<strong>" + ecpc.fixed_phone + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    CEP:&nbsp;<strong>" + ecpc.cep + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Endereço:&nbsp;<strong>" + ecpc.address + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Número:&nbsp;<strong>" + ecpc.address_number + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Bairro:&nbsp;<strong>" + ecpc.district + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Cidade:&nbsp;<strong>" + ecpc.city + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Estado:&nbsp;<strong>" + ecpc.state + "</strong>\n" +
-                "                </li>\n" +
-                "            </ul>\n" +
-                "        </div>\n" +
-                "\n" +
-                "        <div class=\"row\">\n" +
-                "            <div class=\"alert\">\n" +
-                "            </div>\n" +
-                "        </div>\n" +
-                "\n" +
-                "        <div class=\"col-xs-12 col-sm-1 col-md-12 col-lg-12\">\n" +
-                "            <ul class=\"list-group\">\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Casal Responsável\n" +
-                "                    (Equipe do Encontro):&nbsp;<strong>" + ecpc.sponsor_name + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Telefone Casal Responsável\n" +
-                "                    (Equipe do Encontro):&nbsp;<strong>" + ecpc.sponsor_telephone + "</strong>\n" +
-                "                </li>\n" +
-                "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
-                "                    Email Casal Responsável\n" +
-                "                    (Equipe do Encontro):&nbsp;<strong>" + ecpc.sponsor_email + "</strong>\n" +
-                "                </li>\n" +
-                "            </ul>\n" +
-                "        </div>\n" +
-                "\n" +
-                "        <div class=\"row\">\n" +
-                "            <div class=\"alert\">\n" +
-                "            </div>\n" +
-                "        </div>\n" +
-                "    </div>\n" +
-                "</div>\n" +
-                "\n" +
-                "</body>\n" +
-                "</html>";
+        if (req.body.ecpc_date_uid != null && req.body.ecpc_date_uid !== undefined) {
+            return setMarriedCouple(req, res, req.body.ecpc_date_uid);
+        } else {
 
             let options = {
-                method: 'POST',
-                uri: 'https://us-central1-pibaruja-39957.cloudfunctions.net/app/email',
-                body: {
-                    email: 'mcpibaruja@gmail.com',
-                    name: '',
-                    subject: "Novo encontrista cadastrado",
-                    message: message
+                uri: 'https://us-central1-pibaruja-39957.cloudfunctions.net/app/ecpc/date',
+                headers: {
+                    'User-Agent': 'Request-Promise',
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Headers': 'Content-Type',
                 },
                 json: true
             };
 
             return requestPromise(options)
-                .then(function (parsedBody) {
+                .then(function (data) {
+                    if (data.ecpc_dates[0].ecpc_date != null && data.ecpc_dates[0].ecpc_date !== undefined) {
+                        return setMarriedCouple(req, res, data.ecpc_dates[0].uid);
+                    }
                     return res.status(200).send({"success": true, "message": "Casal do ECPC salvo com sucesso"});
                 })
-                .catch(function (err) {
-                    return res.status(200).send({"success": true, "message": "Casal do ECPC salvo com sucesso"});
+                .catch(function (error) {
+                    return res.status(500).send({
+                        "success": false,
+                        "message": "Erro ao salvar casal do ECPC: " + error
+                    });
                 });
-
-        }).catch((error) => {
-            return res.status(500).send({"success": false, "message": "Erro ao salvar casal do ECPC: " + error});
-        });
+        }
 
     }).put((req, res) => {
     res.header('Content-Type', 'application/json');
@@ -649,6 +451,237 @@ app.route("/ecpc/married_couple")
         });
 });
 
+function setMarriedCouple(req, res, uid) {
+    const ecpcRef = admin.database().ref('/ecpc/' + uid + "/married_couple");
+
+    ecpcRef.push({
+        ecpc_date_uid: (uid != null && uid !== undefined) ? uid : "",
+        ecpc_date: (req.body.ecpc_date != null && req.body.ecpc_date !== undefined) ? req.body.ecpc_date : "",
+        husband_name: (req.body.husband_name != null && req.body.husband_name !== undefined) ? req.body.husband_name : "",
+        husband_nickname: (req.body.husband_nickname != null && req.body.husband_nickname !== undefined) ? req.body.husband_nickname : "",
+        husband_birthday: (req.body.husband_birthday != null && req.body.husband_birthday !== undefined) ? formatDate(req.body.husband_birthday) : "",
+        husband_church: (req.body.husband_church != null && req.body.husband_church !== undefined) ? req.body.husband_church : "",
+        husband_father: (req.body.husband_father != null && req.body.husband_father !== undefined) ? req.body.husband_father : "",
+        husband_mother: (req.body.husband_mother != null && req.body.husband_mother !== undefined) ? req.body.husband_mother : "",
+        husband_email: (req.body.husband_email != null && req.body.husband_email !== undefined) ? req.body.husband_email : "",
+        husband_cellphone: (req.body.husband_cellphone != null && req.body.husband_cellphone !== undefined) ? req.body.husband_cellphone : "",
+        husband_observations: (req.body.husband_observations != null && req.body.husband_observations !== undefined) ? req.body.husband_observations : "",
+
+        wife_name: (req.body.wife_name != null && req.body.wife_name !== undefined) ? req.body.wife_name : "",
+        wife_nickname: (req.body.wife_nickname != null && req.body.wife_nickname !== undefined) ? req.body.wife_nickname : "",
+        wife_birthday: (req.body.wife_birthday != null && req.body.wife_birthday !== undefined) ? formatDate(req.body.wife_birthday) : "",
+        wife_church: (req.body.wife_church != null && req.body.wife_church !== undefined) ? req.body.wife_church : "",
+        wife_father: (req.body.wife_father != null && req.body.wife_father !== undefined) ? req.body.wife_father : "",
+        wife_mother: (req.body.wife_mother != null && req.body.wife_mother !== undefined) ? req.body.wife_mother : "",
+        wife_email: (req.body.wife_email != null && req.body.wife_email !== undefined) ? req.body.wife_email : "",
+        wife_cellphone: (req.body.wife_cellphone != null && req.body.wife_cellphone !== undefined) ? req.body.wife_cellphone : "",
+        wife_observations: (req.body.wife_observations != null && req.body.wife_observations !== undefined) ? req.body.wife_observations : "",
+
+        kids: (req.body.kids != null && req.body.kids !== undefined) ? req.body.kids : "",
+        marriage_date: (req.body.marriage_date != null && req.body.marriage_date !== undefined) ? formatDate(req.body.marriage_date) : "",
+        fixed_phone: (req.body.fixed_phone != null && req.body.fixed_phone !== undefined) ? req.body.fixed_phone : "",
+
+        address: (req.body.address != null && req.body.address !== undefined) ? req.body.address : "",
+        address_number: (req.body.address_number != null && req.body.address_number !== undefined) ? req.body.address_number : "",
+        cep: (req.body.cep != null && req.body.cep !== undefined) ? req.body.cep : "",
+        district: (req.body.district != null && req.body.district !== undefined) ? req.body.district : "",
+        city: (req.body.city != null && req.body.city !== undefined) ? req.body.city : "",
+        state: (req.body.state != null && req.body.state !== undefined) ? req.body.state : "",
+        complement: (req.body.complement != null && req.body.complement !== undefined) ? req.body.complement : "",
+
+        sponsor_name: (req.body.sponsor_name != null && req.body.sponsor_name !== undefined) ? req.body.sponsor_name : "",
+        sponsor_telephone: (req.body.sponsor_telephone != null && req.body.sponsor_telephone !== undefined) ? req.body.sponsor_telephone : "",
+        sponsor_email: (req.body.sponsor_email != null && req.body.sponsor_email !== undefined) ? req.body.sponsor_email : "",
+
+        created_at: new Date(Date.now()).toISOString()
+    }).then(() => {
+        let ecpc = req.body;
+
+        let message = "<!DOCTYPE html>\n" +
+            "<html lang=\"en\">\n" +
+            "<head>\n" +
+            "    <meta charset=\"utf-8\">\n" +
+            "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
+            "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
+            "    <meta name=\"description\" content=\"Page Description\">\n" +
+            "    <meta name=\"author\" content=\"tairo\">\n" +
+            "    <title>Page Title</title>\n" +
+            "\n" +
+            "    <!-- Bootstrap -->\n" +
+            "    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\"\n" +
+            "          integrity=\"sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm\" crossorigin=\"anonymous\">\n" +
+            "</head>\n" +
+            "<body>\n" +
+            "<br><br>\n" +
+            "<div class=\"alert alert-info\" align=\"center\">\n" +
+            "    <strong>NOVO ENCONTRISTA</strong>\n" +
+            "</div>\n" +
+            "<div class=\"alert alert-info\" align=\"center\">\n" +
+            "    Data do encontro:&nbsp;<strong>" + ecpc.ecpc_date + "</strong>\n" +
+            "</div>\n" +
+            "<div class=\"alert alert-info\">\n" +
+            "    <div class=\"row\">\n" +
+            "        <!-- MARIDO -->\n" +
+            "        <div class=\"col-xs-6 col-sm-12 col-md-12 col-lg-6\">\n" +
+            "            <ul class=\"list-group\">\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Nome Marido:&nbsp;<strong> " + ecpc.husband_name + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Apelido Marido:&nbsp;<strong> " + ecpc.husband_nickname + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Data de Nascimento Marido:&nbsp;<strong> " + ecpc.husband_birthday + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Denominação (Igreja) Marido:&nbsp;<strong> " + ecpc.husband_church + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Email Marido:&nbsp;<strong> " + ecpc.husband_email + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Celular Marido:&nbsp;<strong> " + ecpc.husband_cellphone + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Nome do Pai Marido:&nbsp;<strong> " + ecpc.husband_father + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Nome da Mãe Marido:&nbsp;<strong> " + ecpc.husband_mother + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Observações A respeito do Marido:&nbsp;<strong> " + ecpc.husband_observations + "</strong>\n" +
+            "                </li>\n" +
+            "            </ul>\n" +
+            "        </div>\n" +
+            "\n" +
+            "        <!-- ESPOSA -->\n" +
+            "        <div class=\"col-xs-6 col-sm-12 col-md-12 col-lg-6\">\n" +
+            "            <ul class=\"list-group\">\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Nome Esposa:&nbsp;<strong> " + ecpc.wife_name + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Apelido Esposa:&nbsp;<strong> " + ecpc.wife_nickname + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Data de Nascimento Esposa:&nbsp;<strong> " + ecpc.wife_birthday + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Denominação (Igreja) Esposa:&nbsp;<strong> " + ecpc.wife_church + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Email Esposa:&nbsp;<strong> " + ecpc.wife_email + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Celular Esposa:&nbsp;<strong> " + ecpc.wife_cellphone + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Nome do Pai Esposa:&nbsp;<strong> " + ecpc.wife_father + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Nome da Mãe Esposa:&nbsp;<strong> " + ecpc.wife_mother + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Observações A respeito da Esposa:&nbsp;<strong> " + ecpc.wife_observations + "</strong>\n" +
+            "                </li>\n" +
+            "            </ul>\n" +
+            "        </div>\n" +
+            "\n" +
+            "        <div class=\"row\">\n" +
+            "            <div class=\"alert\">\n" +
+            "            </div>\n" +
+            "        </div>\n" +
+            "\n" +
+            "        <!-- RESPONSAVEIS  -->\n" +
+            "        <div class=\"col-xs-12 col-sm-1 col-md-12 col-lg-12\">\n" +
+            "            <ul class=\"list-group\">\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Quantos Filhos?:&nbsp;<strong>" + ecpc.kids + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Data do Casamento:&nbsp;<strong>" + ecpc.marriage_date + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Telefone Fixo:&nbsp;<strong>" + ecpc.fixed_phone + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    CEP:&nbsp;<strong>" + ecpc.cep + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Endereço:&nbsp;<strong>" + ecpc.address + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Número:&nbsp;<strong>" + ecpc.address_number + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Bairro:&nbsp;<strong>" + ecpc.district + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Cidade:&nbsp;<strong>" + ecpc.city + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Estado:&nbsp;<strong>" + ecpc.state + "</strong>\n" +
+            "                </li>\n" +
+            "            </ul>\n" +
+            "        </div>\n" +
+            "\n" +
+            "        <div class=\"row\">\n" +
+            "            <div class=\"alert\">\n" +
+            "            </div>\n" +
+            "        </div>\n" +
+            "\n" +
+            "        <div class=\"col-xs-12 col-sm-1 col-md-12 col-lg-12\">\n" +
+            "            <ul class=\"list-group\">\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Casal Responsável\n" +
+            "                    (Equipe do Encontro):&nbsp;<strong>" + ecpc.sponsor_name + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Telefone Casal Responsável\n" +
+            "                    (Equipe do Encontro):&nbsp;<strong>" + ecpc.sponsor_telephone + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Email Casal Responsável\n" +
+            "                    (Equipe do Encontro):&nbsp;<strong>" + ecpc.sponsor_email + "</strong>\n" +
+            "                </li>\n" +
+            "            </ul>\n" +
+            "        </div>\n" +
+            "\n" +
+            "        <div class=\"row\">\n" +
+            "            <div class=\"alert\">\n" +
+            "            </div>\n" +
+            "        </div>\n" +
+            "    </div>\n" +
+            "</div>\n" +
+            "\n" +
+            "</body>\n" +
+            "</html>";
+
+        let options = {
+            method: 'POST',
+            uri: 'https://us-central1-pibaruja-39957.cloudfunctions.net/app/email',
+            body: {
+                email: 'mcpibaruja@gmail.com,tairoroberto@hotmail.com',
+                name: '',
+                subject: "Novo encontrista cadastrado",
+                message: message
+            },
+            json: true
+        };
+
+        return requestPromise(options)
+            .then(function (parsedBody) {
+                return res.status(200).send({"success": true, "message": "Casal do ECPC salvo com sucesso"});
+            })
+            .catch(function (err) {
+                return res.status(200).send({"success": true, "message": "Casal do ECPC salvo com sucesso"});
+            });
+
+    }).catch((error) => {
+        return res.status(500).send({"success": false, "message": "Erro ao salvar casal do ECPC: " + error});
+    });
+}
+
 /*############### Send notification toi topic ###############*/
 app.post("/notification", (req, res) => {
     res.header('Content-Type', 'application/json');
@@ -681,8 +714,8 @@ app.route("/email")
         const mailTransport = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: gmailEmail,
-                pass: gmailPassword,
+                user: 'ecpcpibaruja@gmail.com',
+                pass: 'ecpc@2018',
             },
         });
 

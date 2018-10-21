@@ -42,8 +42,8 @@
                 for (let i = 0; i < data.ecpc_dates.length; i++) {
                     console.log("data:", data.ecpc_dates[i].ecpc_date);
 
-                    if (data.ecpc_dates[i].ecpc_date !== null && data.ecpc_dates[i].ecpc_date !== "") {
-                        html += "\"<br><br><div style='float: left' id='div_checkbox_data_" + i + "' class=\"checkbox col-xs-12 col-sm-12 col-md-12 col-lg-12\" >" +
+                    if (data.ecpc_dates[i].ecpc_date != null && data.ecpc_dates[i].ecpc_date !== undefined) {
+                        html += "<br><br><div style='float: left' id='div_checkbox_data_" + i + "' class=\"checkbox col-xs-12 col-sm-12 col-md-12 col-lg-12\" >" +
                             "<label id='label_checkbox_data_" + i + "' style='color: #F0F8FF'>\n" + data.ecpc_dates[i].ecpc_date +
                             "&nbsp;<input type=\"radio\" required name='radioDate' id='checkbox_data_" + i + "' value=\"" + data.ecpc_dates[i].ecpc_date + "," + data.ecpc_dates[i].uid + "\" id=\"ecpc\" onclick='setValueEcpcDate(this)'>" +
                             "</label>" +
