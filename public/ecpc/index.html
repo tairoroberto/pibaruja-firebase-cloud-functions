@@ -102,6 +102,9 @@
                         "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
                         "                    Observações A respeito do Marido:&nbsp;<strong> " + ecpc.husband_observations + "</strong>\n" +
                         "                </li>\n" +
+                        "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+                        "                    Contato de parentes do Marido:&nbsp;<strong> " + ecpc.husband_parent_contact + "</strong>\n" +
+                        "                </li>\n" +
                         "            </ul>\n" +
                         "        </div>\n" +
                         "\n" +
@@ -134,6 +137,9 @@
                         "                </li>\n" +
                         "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
                         "                    Observações A respeito da Esposa:&nbsp;<strong> " + ecpc.wife_observations + "</strong>\n" +
+                        "                </li>\n" +
+                        "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+                        "                    Contato de parentes da Esposa:&nbsp;<strong> " + ecpc.wife_parent_contact + "</strong>\n" +
                         "                </li>\n" +
                         "            </ul>\n" +
                         "        </div>\n" +
@@ -219,7 +225,7 @@
             let user = $("#user").val();
             let password = $("#password").val();
 
-            if (user !== null && user !== "" && password !== null && password !== "" && user === "admin" && password === "admin123456") {
+            if (user !== null && user !== "" && password !== null && password !== "" && user === "ecpc" && password === "ecpc@2019") {
                 $("#panelUsers").css("display", "block");
                 $("#divLogin").css("display", "none");
             } else {

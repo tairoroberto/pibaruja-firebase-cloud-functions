@@ -221,6 +221,7 @@ app.route("/ecpc/date")
                     let date = {};
                     date.uid = data.key;
                     date.ecpc_date = data.val().ecpc_date;
+                    date.enabled = data.val().enabled;
                     ecpc_dates.push(date)
                 });
                 return res.status(200).send({"success": true, "ecpc_dates": ecpc_dates});
@@ -385,6 +386,7 @@ app.route("/ecpc/married_couple")
             ecpc.husband_email = (req.body.husband_email !== null && req.body.husband_email !== undefined) ? req.body.husband_email : "";
             ecpc.husband_cellphone = (req.body.husband_cellphone !== null && req.body.husband_cellphone !== undefined) ? req.body.husband_cellphone : "";
             ecpc.husband_observations = (req.body.husband_observations !== null && req.body.husband_observations !== undefined) ? req.body.husband_observations : "";
+            ecpc.husband_parent_contact = (req.body.husband_parent_contact !== null && req.body.husband_parent_contact !== undefined) ? req.body.husband_parent_contact : "";
 
             ecpc.wife_name = (req.body.wife_name !== null && req.body.wife_name !== undefined) ? req.body.wife_name : "";
             ecpc.wife_nickname = (req.body.wife_nickname !== null && req.body.wife_nickname !== undefined) ? req.body.wife_nickname : "";
@@ -395,6 +397,7 @@ app.route("/ecpc/married_couple")
             ecpc.wife_email = (req.body.wife_email !== null && req.body.wife_email !== undefined) ? req.body.wife_email : "";
             ecpc.wife_cellphone = (req.body.wife_cellphone !== null && req.body.wife_cellphone !== undefined) ? req.body.wife_cellphone : "";
             ecpc.wife_observations = (req.body.wife_observations !== null && req.body.wife_observations !== undefined) ? req.body.wife_observations : "";
+            ecpc.wife_parent_contact = (req.body.wife_parent_contact !== null && req.body.wife_parent_contact !== undefined) ? req.body.wife_parent_contact : "";
 
             ecpc.kids = (req.body.kids !== null && req.body.kids !== undefined) ? req.body.kids : "";
             ecpc.marriage_date = (req.body.marriage_date !== null && req.body.marriage_date !== undefined) ? formatDate(req.body.marriage_date) : "";
@@ -466,6 +469,7 @@ function setMarriedCouple(req, res, uid) {
         husband_email: (req.body.husband_email != null && req.body.husband_email !== undefined) ? req.body.husband_email : "",
         husband_cellphone: (req.body.husband_cellphone != null && req.body.husband_cellphone !== undefined) ? req.body.husband_cellphone : "",
         husband_observations: (req.body.husband_observations != null && req.body.husband_observations !== undefined) ? req.body.husband_observations : "",
+        husband_parent_contact: (req.body.husband_parent_contact != null && req.body.husband_parent_contact !== undefined) ? req.body.husband_parent_contact : "",
 
         wife_name: (req.body.wife_name != null && req.body.wife_name !== undefined) ? req.body.wife_name : "",
         wife_nickname: (req.body.wife_nickname != null && req.body.wife_nickname !== undefined) ? req.body.wife_nickname : "",
@@ -476,6 +480,7 @@ function setMarriedCouple(req, res, uid) {
         wife_email: (req.body.wife_email != null && req.body.wife_email !== undefined) ? req.body.wife_email : "",
         wife_cellphone: (req.body.wife_cellphone != null && req.body.wife_cellphone !== undefined) ? req.body.wife_cellphone : "",
         wife_observations: (req.body.wife_observations != null && req.body.wife_observations !== undefined) ? req.body.wife_observations : "",
+        wife_parent_contact: (req.body.wife_parent_contact != null && req.body.wife_parent_contact !== undefined) ? req.body.wife_parent_contact : "",
 
         kids: (req.body.kids != null && req.body.kids !== undefined) ? req.body.kids : "",
         marriage_date: (req.body.marriage_date != null && req.body.marriage_date !== undefined) ? formatDate(req.body.marriage_date) : "",
@@ -551,6 +556,9 @@ function setMarriedCouple(req, res, uid) {
             "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
             "                    Observações A respeito do Marido:&nbsp;<strong> " + ecpc.husband_observations + "</strong>\n" +
             "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Contato de parentes do Marido:&nbsp;<strong> " + ecpc.husband_parent_contact + "</strong>\n" +
+            "                </li>\n" +
             "            </ul>\n" +
             "        </div>\n" +
             "\n" +
@@ -583,6 +591,9 @@ function setMarriedCouple(req, res, uid) {
             "                </li>\n" +
             "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
             "                    Observações A respeito da Esposa:&nbsp;<strong> " + ecpc.wife_observations + "</strong>\n" +
+            "                </li>\n" +
+            "                <li class=\"list-group-item d-flex  align-items-center\">\n" +
+            "                    Contato de parentes da Esposa:&nbsp;<strong> " + ecpc.wife_parent_contact + "</strong>\n" +
             "                </li>\n" +
             "            </ul>\n" +
             "        </div>\n" +
