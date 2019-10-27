@@ -71,7 +71,7 @@
                 // Stop form from submitting normally
                 event.preventDefault();
 
-                if ((ecpcDate == null || ecpcDate === undefined) || (ecpcDateUid == null || ecpcDateUid === undefined)){
+                if ((ecpcDate == null || ecpcDate === undefined) || (ecpcDateUid == null || ecpcDateUid === undefined)) {
                     getDataOnServer();
                     $("#checkbox_data_0").click();
                 }
@@ -131,6 +131,8 @@
                         messageSuccess.html(data.message);
                         divMessageSuccess.css("display", "block");
                         divMessageError.css("display", "none");
+
+                        alert("Atenção, sua vaga no encontro de casais será efetivada apenas quando ouver o pagamento do sinal e o encaminhamento do coprovante ao responsável!")
 
                     } else {
                         messageError.html(data.message);
@@ -215,7 +217,7 @@
                 </div>
             </div>
 
-            <div class="row" >
+            <div class="row">
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                     <div class="alert alert-warning">
                         <strong>Datas disponíveis</strong>
@@ -239,7 +241,8 @@
                            required="">
                     <input type="text" class="last name" id="apelido_marido" name="apelido_marido"
                            placeholder="Apelido Marido" required="">
-                    <label for="data_nascimento_marido" style="float: left; color: #FFFFFF">Data de Nascimento Marido</label>
+                    <label for="data_nascimento_marido" style="float: left; color: #FFFFFF">Data de Nascimento
+                        Marido</label>
                     <input type="date" style="width: 100%;" id="data_nascimento_marido" name="data_nascimento_marido"
                            placeholder="Data de Nascimento Marido" required=""><br><br>
                     <select name="denominacao_marido" id="denominacao_marido" class="form-control" required>
@@ -331,8 +334,10 @@
                            placeholder="Nome da Mãe Marido" required="">
                     <textarea style="width: 100%; height: 150px" id="observacoes_marido" name="observacoes_marido"
                               placeholder="Indique abaixo se o marido possui alguma alergia a alimentos ou remédios. Solicitamnos especificarem também tratamentos médicos em andamento, remédio utilizados, etc."></textarea><br><br>
-                    <textarea style="width: 100%; height: 150px" id="parente_contato_marido" name="parente_contato_marido"
-                              placeholder="Indique abaixo um ou mais contatos de familiares do Marido &#10;Ex: José (irmão) - (11) 1111-1111." required=""></textarea>
+                    <textarea style="width: 100%; height: 150px" id="parente_contato_marido"
+                              name="parente_contato_marido"
+                              placeholder="Indique abaixo um ou mais contatos de familiares do Marido &#10;Ex: José (irmão) - (11) 1111-1111."
+                              required=""></textarea>
 
                 </div>
                 <div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
@@ -341,7 +346,8 @@
                            required="">
                     <input type="text" class="last name" id="apelido_esposa" name="apelido_esposa"
                            placeholder="Apelido Esposa" required="">
-                    <label for="data_nascimento_esposa" style="float: left; color: #FFFFFF">Data de Nascimento Esposa</label>
+                    <label for="data_nascimento_esposa" style="float: left; color: #FFFFFF">Data de Nascimento
+                        Esposa</label>
                     <input type="date" style="width: 100%;" id="data_nascimento_esposa" name="data_nascimento_esposa"
                            placeholder="Data de Nascimento Esposa" required=""><br><br>
                     <select name="denominacao_marido" id="denominacao_esposa" class="form-control" required>
@@ -433,8 +439,10 @@
                            placeholder="Nome da Mãe Esposa" required="">
                     <textarea style="width: 100%; height: 150px" id="observacoes_esposa" name="observacoes_esposa"
                               placeholder="Indique abaixo se a esposa possui alguma alergia a alimentos ou remédios. Solicitamnos especificarem também tratamentos médicos em andamento, remédio utilizados, etc."></textarea><br><br>
-                    <textarea style="width: 100%; height: 150px" id="parente_contato_esposa" name="parente_contato_esposa"
-                              placeholder="Indique abaixo um ou mais contatos de familiares da Esposa &#10;Ex: Ana (irmã) - (11) 1111-1111." required=""></textarea>
+                    <textarea style="width: 100%; height: 150px" id="parente_contato_esposa"
+                              name="parente_contato_esposa"
+                              placeholder="Indique abaixo um ou mais contatos de familiares da Esposa &#10;Ex: Ana (irmã) - (11) 1111-1111."
+                              required=""></textarea>
                 </div>
             </div>
 
@@ -477,7 +485,8 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" align="center">
                     <div class="progress" id="progressBarSubmit" style="width: 0px;">
-                        <div class="progress-bar progress-bar-striped active progress-bar-animated bg-info" role="progressbar"
+                        <div class="progress-bar progress-bar-striped active progress-bar-animated bg-info"
+                             role="progressbar"
                              aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
                         </div>
                     </div>
