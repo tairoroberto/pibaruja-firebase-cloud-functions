@@ -238,8 +238,11 @@ app.route("/ecpc/date")
 
         const dateRef = admin.database().ref('/ecpc/');
 
+        // Request https://us-central1-pibaruja-39957.cloudfunctions.net/app/ecpc/date
+        // {"ecpc_date":"27/11/2020 a 29/11/2020"}
+
         if (req.body.ecpc_date !== null && req.body.ecpc_date !== undefined) {
-            dateRef.push({ecpc_date: (req.body.ecpc_date !== "") ? req.body.ecpc_date : ""}).then(() => {
+            dateRef.push({ecpc_date: (req.body.ecpc_date !== "") ? req.body.ecpc_date : "", enabled: true}).then(() => {
                 return res.status(200).send({"success": true, "message": "Data do ECPC salvo com sucesso"});
             }).catch((error) => {
                 console.log("Erro ao salvar data do ECPC:", error);
