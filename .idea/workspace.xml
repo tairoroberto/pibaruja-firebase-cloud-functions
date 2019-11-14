@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="baa928af-1daa-441e-97f4-453b7bd2c2bd" name="Default" comment="Ajuste de notificação no cadastro de casais do ecpc">
+    <list default="true" id="baa928af-1daa-441e-97f4-453b7bd2c2bd" name="Default" comment="Ajuste de datas">
+      <change beforePath="$PROJECT_DIR$/.firebase/hosting.cHVibGlj.cache" beforeDir="false" afterPath="$PROJECT_DIR$/.firebase/hosting.cHVibGlj.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/functions/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -103,7 +104,9 @@
       <workItem from="1530224701060" duration="630000" />
       <workItem from="1530233087240" duration="3104000" />
       <workItem from="1572188281638" duration="1828000" />
-      <workItem from="1572625504336" duration="882000" />
+      <workItem from="1572625504336" duration="1224000" />
+      <workItem from="1572640472666" duration="13000" />
+      <workItem from="1573747679260" duration="965000" />
     </task>
     <task id="LOCAL-00001" summary="add hash">
       <created>1529009344065</created>
@@ -154,7 +157,14 @@
       <option name="project" value="LOCAL" />
       <updated>1572190231011</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Ajuste de datas">
+      <created>1572626436463</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1572626436463</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -165,7 +175,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
@@ -177,7 +189,8 @@
     <MESSAGE value="Ajuste de cadastro de casais do ecpc" />
     <MESSAGE value="Ajuste de cadastro de casais do ecpc e email" />
     <MESSAGE value="Ajuste de notificação no cadastro de casais do ecpc" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajuste de notificação no cadastro de casais do ecpc" />
+    <MESSAGE value="Ajuste de datas" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajuste de datas" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
